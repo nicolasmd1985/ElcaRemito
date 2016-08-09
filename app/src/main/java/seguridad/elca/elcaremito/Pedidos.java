@@ -268,6 +268,7 @@ public class Pedidos  extends ActionBarActivity {
     //Add User method getting called on clicking (+) button
     public void addPedidos(View view) {
        Intent objIntent = new Intent(getApplicationContext(), Nuevo_pedido.class);
+        objIntent.putExtra("idusuario",idusuar );
        startActivity(objIntent);
     }
 

@@ -13,10 +13,18 @@ public class Nuevo_pedido extends Activity {
     EditText descripcion,cliente,calle,numero,ciudad,provincia;
     DBController controller = new DBController(this);
 
+
+    String idusuar;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_pedido);
+
+        idusuar = getIntent().getStringExtra("idusuario");
+
+
         descripcion = (EditText) findViewById(R.id.descripcion);
         cliente = (EditText) findViewById(R.id.cliente);
         calle = (EditText) findViewById(R.id.calle);
@@ -31,6 +39,8 @@ public class Nuevo_pedido extends Activity {
      */
     public void addNewUser(View view) {
         HashMap<String, String> queryValues = new HashMap<String, String>();
+
+        queryValues.put("idtecnico", idusuar);
         queryValues.put("descripcion", descripcion.getText().toString());
         queryValues.put("cliente", cliente.getText().toString());
         queryValues.put("calle", calle.getText().toString());
@@ -47,19 +57,10 @@ public class Nuevo_pedido extends Activity {
                 if (calle.getText().toString() != null
                         && calle.getText().toString().trim().length() != 0) {
 
-
                     controller.insertUser(queryValues);
                     this.callHomeActivity(view);
 
-
-
-
-
-
                 }
-
-
-
 
             }else {
                 Toast.makeText(getApplicationContext(), "Instroduzaca descripcion",
@@ -89,6 +90,7 @@ public class Nuevo_pedido extends Activity {
     public void callHomeActivity(View view) {
         Intent objIntent = new Intent(getApplicationContext(),
                 Pedidos.class);
+        objIntent.putExtra("idusuario",idusuar );
         startActivity(objIntent);
     }
 
