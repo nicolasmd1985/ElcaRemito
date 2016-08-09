@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Pedidos  extends ActionBarActivity {
 
@@ -46,7 +48,7 @@ public class Pedidos  extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedidos);
         idusuar = getIntent().getStringExtra("idusuario");
-
+        System.out.println("idusu"+idusuar);
         cargabdl(idusuar);
         prgDialog.dismiss();
 
@@ -57,13 +59,31 @@ public class Pedidos  extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView parent, View view, int i, long l) {
                 Toast.makeText(getApplicationContext(), "presiono " + i, Toast.LENGTH_SHORT).show();
-                StringBuilder sb = new StringBuilder();
-                sb.append(i+1);
+
+
+
+                Map<String, Object> map = (Map<String, Object>)lista.getItemAtPosition(i);
+                String idpedido = (String) map.get("idauxpedido");
+                //System.out.println(lista.getItemAtPosition(i));
+                //System.out.println(idpedido);
+
+
+
+
+
+
+                //StringBuilder sb = new StringBuilder();
+                //sb.append(i+1);
                 Intent x = new Intent(Pedidos.this, Detalles_pedido.class);
-                x.putExtra("idpedido", sb.toString() );
+                x.putExtra("idpedido",idpedido  );
+                x.putExtra("idusuario",idusuar );
                 //for (HashMap<String, String> hashMap : loginlist) {}
                 //System.out.println(lista.);
                 startActivity(x);
+
+
+
+
 
             }
         });
@@ -271,6 +291,27 @@ public class Pedidos  extends ActionBarActivity {
         objIntent.putExtra("idusuario",idusuar );
        startActivity(objIntent);
     }
+
+
+
+
+    //****************ESTO ES PARA DEVOLVERSE*****************
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+        if (keyCode == event.KEYCODE_BACK) {
+            Intent i = new Intent(Pedidos.this, Login.class);
+            i.putExtra("idusuario",idusuar );
+            startActivity(i);
+            //return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
+
+
 
     //////////////***********actualiza status*************************//////////////
 
