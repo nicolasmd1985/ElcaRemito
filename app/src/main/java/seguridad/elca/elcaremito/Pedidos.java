@@ -127,7 +127,7 @@ public class Pedidos  extends ActionBarActivity {
 
 
         //inicia lista
-        ArrayList<HashMap<String, String>> userList =  controller.getAllUsers(idusuar);
+        ArrayList<HashMap<String, String>> userList =  controller.get_auxped(idusuar);
 
 
         if(userList.size()!=0){
@@ -245,7 +245,7 @@ public class Pedidos  extends ActionBarActivity {
                     // Insert User into SQLite DB
                     queryValues.put("fechack", obj.get("fechack").toString());
                     // Insert User into SQLite DB
-                    controller.insertUser(queryValues);
+                    controller.inser_auxped(queryValues);
                     HashMap<String, String> map = new HashMap<String, String>();
                     // Add status for each User in Hashmap
                     map.put("Id", obj.get("idauxpedido").toString());
@@ -321,7 +321,7 @@ public class Pedidos  extends ActionBarActivity {
         System.out.println(json);
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        ArrayList<HashMap<String, String>> userList = controller.getAllUsers(idusuar);
+        ArrayList<HashMap<String, String>> userList = controller.get_auxped(idusuar);
         if (userList.size() != 0) {
 
             prgDialog.show();
@@ -345,7 +345,7 @@ public class Pedidos  extends ActionBarActivity {
 
             });
         } else {
-            Toast.makeText(getApplicationContext(), "SQLite and Remote MySQL DBs are in Sync!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "No tiene Pedidos pendientes", Toast.LENGTH_LONG).show();
         }
 
     }

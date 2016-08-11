@@ -42,6 +42,8 @@ public class Agregar_dispositivos extends ActionBarActivity {
         idusuar = getIntent().getStringExtra("idusuario");
 
         System.out.println(idped+""+idusuar);
+
+
         cargadisp(idped);
 
 
@@ -73,6 +75,7 @@ public class Agregar_dispositivos extends ActionBarActivity {
                         Intent objIntent = new Intent(getApplicationContext(), Mod_dispositivo.class);
                         objIntent.putExtra("idpedido", idped );
                         objIntent.putExtra("codigoscan", code);
+                        objIntent.putExtra("idusuario",idusuar );
                         startActivity(objIntent);
 
 
@@ -240,6 +243,11 @@ public class Agregar_dispositivos extends ActionBarActivity {
                 Remito.class);
         objIntent.putExtra("idpedido", idped );
         objIntent.putExtra("idusuario",idusuar );
+
+
+
+
+
         startActivity(objIntent);
     }
 

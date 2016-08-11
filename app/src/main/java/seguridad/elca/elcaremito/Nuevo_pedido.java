@@ -57,7 +57,7 @@ public class Nuevo_pedido extends Activity {
                 if (calle.getText().toString() != null
                         && calle.getText().toString().trim().length() != 0) {
 
-                    controller.insertUser(queryValues);
+                    controller.inser_auxped(queryValues);
                     this.callHomeActivity(view);
 
                 }

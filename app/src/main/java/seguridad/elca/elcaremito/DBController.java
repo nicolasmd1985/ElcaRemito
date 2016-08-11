@@ -40,13 +40,13 @@ public class DBController extends SQLiteOpenHelper {
         query = "CREATE TABLE usuarios ( idusuario INTEGER PRIMARY KEY, nombre TEXT, apellido TEXT, usuario TEXT, pass TEXT)";
         sqLiteDatabase.execSQL(query);
         ///////////////BASE AUX PEDIDOS//////////////////
-        query = "CREATE TABLE aux_pedido ( idauxpedido INTEGER PRIMARY KEY, idusuario INTEGER REFERENCES idusuario, cliente TEXT, descripcion TEXT, idnumsoporte TEXT, calle TEXT, numero TEXT, ciudad TEXT, provincia TEXT, fechacr TEXT, fechack TEXT)";
+        query = "CREATE TABLE aux_pedido ( idauxpedido INTEGER PRIMARY KEY, fkidusuario INTEGER REFERENCES idusuario, cliente TEXT, descripcion TEXT, idnumsoporte TEXT, calle TEXT, numero TEXT, ciudad TEXT, provincia TEXT, fechacr TEXT, fechack TEXT, finalizado TEXT)";
         sqLiteDatabase.execSQL(query);
         ///////////////BASE AUX PEDIDOS//////////////////
-        query = "CREATE TABLE dispositivos ( id_dispositivo INTEGER PRIMARY KEY, codigoscan TEXT, nombre TEXT, descripcion TEXT, latitud TEXT, longitud TEXT, horasca TEXT, fkidauxpedido INTEGER REFERENCES idauxpedido)";
+        query = "CREATE TABLE dispositivos ( id_dispositivo INTEGER PRIMARY KEY, codigoscan TEXT, nombre TEXT, descripcion TEXT, latitud TEXT, longitud TEXT, horasca TEXT,  fkidauxpedido INTEGER REFERENCES idauxpedido)";
         sqLiteDatabase.execSQL(query);
         ///////////////BASE DEL REMITO//////////////////
-        query = "CREATE TABLE remito ( id_remito INTEGER PRIMARY KEY, id_dispositivo INTEGER REFERENCES id_dispositivo, observaciones TEXT, firma BLOB)";
+        query = "CREATE TABLE remito ( id_remito INTEGER PRIMARY KEY, fkidauxpedido INTEGER REFERENCES idauxpedido, observaciones TEXT, firma BLOB, horafinalizado TEXT)";
         sqLiteDatabase.execSQL(query);
 
 
@@ -70,10 +70,12 @@ public class DBController extends SQLiteOpenHelper {
         query = "DROP TABLE IF EXISTS remito";
         sqLiteDatabase.execSQL(query);
         onCreate(sqLiteDatabase);
+
+
     }
 
 
-///////////////////*****************VALORES DE USUARIO***************/////////////
+///////////////////*****************VALORES DE USUARIO***************/////////////ok
 
     /**
      * Inserts User into SQLite DB   * @param queryValues
@@ -93,7 +95,7 @@ public class DBController extends SQLiteOpenHelper {
         database.close();
     }
 
-////////////////////*************OBTENER LISTA DE USUARIOS***********///////////
+////////////////////*************OBTENER LISTA DE USUARIOS***********///////////ok
 
 
     /**
@@ -127,7 +129,7 @@ public class DBController extends SQLiteOpenHelper {
     }
 
 
-    ///////////////////////QUERY PARA ACCESO////////////////////////////////////
+    ///////////////////////QUERY PARA ACCESO////////////////////////////////////ok
     public ArrayList<HashMap<String, String>> login() {
         ArrayList<HashMap<String, String>> logind;
         logind = new ArrayList<HashMap<String, String>>();
@@ -160,11 +162,11 @@ public class DBController extends SQLiteOpenHelper {
      * Inserts User into SQLite DB
      * @param queryValues
      */
-    public void insertUser(HashMap<String, String> queryValues) {
+    public void inser_auxped(HashMap<String, String> queryValues) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         //values.put("idauxpedido", queryValues.get("idauxpedido"));
-        values.put("idusuario", queryValues.get("idtecnico"));
+        values.put("fkidusuario", queryValues.get("idtecnico"));
         values.put("idnumsoporte", queryValues.get("idnumsoporte"));
         values.put("descripcion", queryValues.get("descripcion"));
         values.put("cliente", queryValues.get("cliente"));
@@ -184,17 +186,17 @@ public class DBController extends SQLiteOpenHelper {
 
 
 
-///////////////////**************OBTIENE USUARIO**************///////////
+///////////////////**************OBTIENE USUARIO**************///////////OK
     /**
      * Get list of Users from SQLite DB as Array List
      * @return
      */
-    public ArrayList<HashMap<String, String>> getAllUsers(String idusuar) {
+    public ArrayList<HashMap<String, String>> get_auxped(String idusuar) {
         ArrayList<HashMap<String, String>> wordList;
         //crea lista
         wordList = new ArrayList<HashMap<String, String>>();
 
-        String selectQuery = "SELECT  * FROM aux_pedido where idusuario = "+idusuar+"";
+        String selectQuery = "SELECT  * FROM aux_pedido where fkidusuario = "+idusuar+" and finalizado is null  ";
 
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
@@ -246,7 +248,8 @@ public class DBController extends SQLiteOpenHelper {
 
 
 
-    ////////////////////***********OBTENER DISPOSITIVOS***********////////////
+
+      ////////////////////***********OBTENER DISPOSITIVOS***********////////////
 
     /**
      * Get list of Users from SQLite DB as Array List
@@ -298,7 +301,7 @@ public class DBController extends SQLiteOpenHelper {
         values.put("latitud", queryValues.get("latitud"));
         values.put("longitud", queryValues.get("longitud"));
         values.put("horasca", queryValues.get("tiempo"));
-        values.put("fkidauxpedido", queryValues.get("idpedido"));
+        values.put("fkidauxpedido", queryValues.get("fkidpedido"));
 
 
 
@@ -313,6 +316,8 @@ public class DBController extends SQLiteOpenHelper {
     ////////////////*********************ELIMINA DISPOSITIVO**************///////////////
 
     public void dipsup (String iddisp) {
+
+
         SQLiteDatabase database = this.getWritableDatabase();
 
         database.delete("dispositivos", "codigoscan='"+iddisp+"'", null);
@@ -385,10 +390,12 @@ public class DBController extends SQLiteOpenHelper {
 
 
             ContentValues values = new ContentValues();
-            //values.put("idauxpedido", queryValues.get("idauxpedido"));
-            //  query = "CREATE TABLE dispositivos ( id_dispositivo INTEGER PRIMARY KEY, codigoscan TEXT, nombre TEXT, descripcion TEXT, latitud TEXT, longitud TEXT, horasca TEXT)";
+            values.put("fkidauxpedido", queryValues.get("idpedido"));
+            values.put("observaciones", queryValues.get("observaciones"));
+            values.put("horafinalizado", queryValues.get("horafinal"));
 
-            //query = "CREATE TABLE remito ( id_remito INTEGER PRIMARY KEY, id_dispositivo INTEGER REFERENCES id_dispositivo, observaciones TEXT, firma BLOB)";
+
+
             ByteArrayOutputStream out = new ByteArrayOutputStream();
 
             imagen.compress(Bitmap.CompressFormat.PNG, 100, out);
@@ -400,6 +407,25 @@ public class DBController extends SQLiteOpenHelper {
 
         }
 
+    }
+
+
+
+    //////////////////////************************MODIFICAR DISPOSITIVOS*********/////////////////
+
+    /**
+     * Inserts User into SQLite DB
+     * //@param queryValues
+     */
+    public void upload_aux(String idped) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        //values.put("idauxpedido", queryValues.get("idauxpedido"));
+
+        values.put("finalizado", "1" );
+
+        database.update("aux_pedido", values ,"idauxpedido"+"="+idped, null);
+        database.close();
     }
 
 

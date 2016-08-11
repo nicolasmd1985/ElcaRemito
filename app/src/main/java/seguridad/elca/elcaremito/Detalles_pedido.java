@@ -84,7 +84,8 @@ public class Detalles_pedido extends ActionBarActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        System.out.println("hola");
+        //System.out.println("hola");
+
 
         Intent i = new Intent(Detalles_pedido.this, Agregar_dispositivos.class);
         i.putExtra("idpedido", idpedido );

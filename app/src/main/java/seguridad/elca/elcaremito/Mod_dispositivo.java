@@ -21,7 +21,7 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
     EditText codigo,nombre,descripcion,latitud,longitud,tiemp;
     private Button scanBtn;
 
-    String idped,code;
+    String idped,code,idusuar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,8 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
 
         scanBtn.setOnClickListener(this);
         idped= getIntent().getStringExtra("idpedido");
+        idusuar = getIntent().getStringExtra("idusuario");
+
         code=getIntent().getStringExtra("codigoscan");
         carga_datos(code);
 
@@ -110,6 +112,7 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
         if (keyCode == event.KEYCODE_BACK) {
             Intent i = new Intent(Mod_dispositivo.this, Agregar_dispositivos.class);
             i.putExtra("idpedido", idped );
+            i.putExtra("idusuario",idusuar );
             startActivity(i);
             //return true;
         }
@@ -126,6 +129,8 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
         Intent objIntent = new Intent(getApplicationContext(),
                 Agregar_dispositivos.class);
         objIntent.putExtra("idpedido", idped );
+        objIntent.putExtra("idusuario",idusuar );
+
         startActivity(objIntent);
     }
 

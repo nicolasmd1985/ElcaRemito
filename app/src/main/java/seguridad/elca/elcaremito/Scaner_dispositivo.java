@@ -234,7 +234,7 @@ public class Scaner_dispositivo extends AppCompatActivity implements OnClickList
         queryValues.put("latitud", latitud.getText().toString());
         queryValues.put("longitud", longitud.getText().toString());
         queryValues.put("tiempo", tiempo());
-        queryValues.put("idpedido", idped);
+        queryValues.put("fkidpedido", idped);
         //System.out.println(tiempo());
 
         controller.inserdips(queryValues);
@@ -270,6 +270,7 @@ public class Scaner_dispositivo extends AppCompatActivity implements OnClickList
         Intent objIntent = new Intent(getApplicationContext(),
                 Agregar_dispositivos.class);
         objIntent.putExtra("idpedido", idped );
+        objIntent.putExtra("idusuario",idusuar );
         startActivity(objIntent);
     }
 
