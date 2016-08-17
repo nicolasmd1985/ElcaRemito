@@ -30,7 +30,11 @@ public class DBController extends SQLiteOpenHelper {
     public DBController(Context contexto) {
         super(contexto,NOMBRE_BASE_DATOS, null, VERSION_ACTUAL);
         this.contexto = contexto;
+
+
     }
+
+
 
 
     @Override
@@ -40,14 +44,15 @@ public class DBController extends SQLiteOpenHelper {
         query = "CREATE TABLE usuarios ( idusuario INTEGER PRIMARY KEY, nombre TEXT, apellido TEXT, usuario TEXT, pass TEXT)";
         sqLiteDatabase.execSQL(query);
         ///////////////BASE AUX PEDIDOS//////////////////
-        query = "CREATE TABLE aux_pedido ( idauxpedido INTEGER PRIMARY KEY, fkidusuario INTEGER REFERENCES idusuario, cliente TEXT, descripcion TEXT, idnumsoporte TEXT, calle TEXT, numero TEXT, ciudad TEXT, provincia TEXT, fechacr TEXT, fechack TEXT, finalizado TEXT)";
+        query = "CREATE TABLE aux_pedido ( idauxpedido INTEGER PRIMARY KEY, fkidusuario INTEGER REFERENCES usuarios(idusuario) ON DELETE CASCADE, cliente TEXT, descripcion TEXT, idnumsoporte TEXT, calle TEXT, numero TEXT, ciudad TEXT, provincia TEXT, fechacr TEXT, fechack TEXT, finalizado TEXT)";
         sqLiteDatabase.execSQL(query);
         ///////////////BASE AUX PEDIDOS//////////////////
-        query = "CREATE TABLE dispositivos ( id_dispositivo INTEGER PRIMARY KEY, codigoscan TEXT, nombre TEXT, descripcion TEXT, latitud TEXT, longitud TEXT, horasca TEXT,  fkidauxpedido INTEGER REFERENCES idauxpedido)";
+        query = "CREATE TABLE dispositivos ( id_dispositivo INTEGER PRIMARY KEY, codigoscan TEXT, nombre TEXT, descripcion TEXT, latitud TEXT, longitud TEXT, horasca TEXT,  fkidauxpedido INTEGER REFERENCES aux_pedido(idauxpedido) ON DELETE CASCADE)";
         sqLiteDatabase.execSQL(query);
         ///////////////BASE DEL REMITO//////////////////
-        query = "CREATE TABLE remito ( id_remito INTEGER PRIMARY KEY, fkidauxpedido INTEGER REFERENCES idauxpedido, observaciones TEXT, firma BLOB, horafinalizado TEXT)";
+        query = "CREATE TABLE remito ( id_remito INTEGER PRIMARY KEY, fkidauxpedido INTEGER REFERENCES aux_pedido(idauxpedido) ON DELETE CASCADE, observaciones TEXT, firma BLOB, horafinalizado TEXT)";
         sqLiteDatabase.execSQL(query);
+
 
 
     }
@@ -72,6 +77,13 @@ public class DBController extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
 
 
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase sqLiteDatabase)
+    {
+        super.onOpen(sqLiteDatabase);
+        sqLiteDatabase.execSQL("PRAGMA foreign_keys=ON;");
     }
 
 
@@ -196,7 +208,8 @@ public class DBController extends SQLiteOpenHelper {
         //crea lista
         wordList = new ArrayList<HashMap<String, String>>();
 
-        String selectQuery = "SELECT  * FROM aux_pedido where fkidusuario = "+idusuar+" and finalizado is null  ";
+        //String selectQuery = "SELECT  * FROM aux_pedido where fkidusuario = "+idusuar+" and finalizado is null  ";
+        String selectQuery = "SELECT  * FROM aux_pedido where fkidusuario = "+idusuar+" ";
 
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
@@ -426,6 +439,21 @@ public class DBController extends SQLiteOpenHelper {
 
         database.update("aux_pedido", values ,"idauxpedido"+"="+idped, null);
         database.close();
+    }
+
+
+
+
+
+    ////////////////*********************ELIMINA AUX-PEDIDO**************///////////////
+
+    public void elim_aux (String idped) {
+
+
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        database.delete("aux_pedido", "idauxpedido='"+idped+"'", null);
+
     }
 
 

@@ -125,6 +125,10 @@ public class Remito extends ActionBarActivity {
                 controller.upfoto(image,queryValues);
                 controller.upload_aux(idped);
 
+
+                controller.elim_aux(idped);
+
+
                 drawView.destroyDrawingCache();
 
 
