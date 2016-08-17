@@ -34,11 +34,10 @@ public class Scaner_dispositivo extends AppCompatActivity implements OnClickList
     DBController controller = new DBController(this);
 
 
-
-    EditText codigo,nombre,descripcion,latitud,longitud,tiemp;
+    EditText codigo, nombre, descripcion, latitud, longitud, tiemp;
     private Button scanBtn;
 
-    String idped,idusuar;
+    String idped, idusuar;
 
 
     @Override
@@ -49,9 +48,9 @@ public class Scaner_dispositivo extends AppCompatActivity implements OnClickList
         idusuar = getIntent().getStringExtra("idusuario");
 
 
-        scanBtn = (Button)findViewById(R.id.scan_button);
-       // formatTxt = (TextView)findViewById(R.id.scan_format);
-       // contentTxt = (TextView)findViewById(R.id.scan_content);
+        scanBtn = (Button) findViewById(R.id.scan_button);
+        // formatTxt = (TextView)findViewById(R.id.scan_format);
+        // contentTxt = (TextView)findViewById(R.id.scan_content);
 
 
         codigo = (EditText) findViewById(R.id.codigo);
@@ -62,15 +61,14 @@ public class Scaner_dispositivo extends AppCompatActivity implements OnClickList
         tiemp = (EditText) findViewById(R.id.tiempo);
 
         scanBtn.setOnClickListener(this);
-        idped= getIntent().getStringExtra("idpedido");
+        idped = getIntent().getStringExtra("idpedido");
         //System.out.println
 
 
-
-
         LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Localizacion Local = new Localizacion();
-        Local.Scaner_dispositivo(this);
+        MyLocationListener mlocListener = new MyLocationListener();
+        mlocListener.setMainActivity(this);
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -81,13 +79,13 @@ public class Scaner_dispositivo extends AppCompatActivity implements OnClickList
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        //mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
-        //      (LocationListener) Local);
-
         mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
-                (LocationListener) Local);
+                (LocationListener) mlocListener);
 
-    }
+        }
+
+
+
 
     @Override
     public void onClick(View v) {
@@ -137,84 +135,60 @@ public class Scaner_dispositivo extends AppCompatActivity implements OnClickList
 
 
 
-//////////////////////TOMA UBICACION GPS/////////////////////
-
-    public void setLocation(Location loc) {
-        //Obtener la direccion de la calle a partir de la latitud y la longitud
-        if (loc.getLatitude() != 0.0 && loc.getLongitude() != 0.0) {
-            try {
-                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-                List<Address> list = geocoder.getFromLocation(
-                        loc.getLatitude(), loc.getLongitude(), 1);
-                if (!list.isEmpty()) {
-                    Address DirCalle = list.get(0);
-              //      mensaje2.setText("Mi direccion es: \n"
-                //            + DirCalle.getAddressLine(0));
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
 
 //////////////*********Aqui empieza la Clase Localizacion**************/
 
-    public class Localizacion implements LocationListener {
-        Scaner_dispositivo Scaner_dispositivo;
+    /* Class My Location Listener */
+    public class MyLocationListener implements LocationListener {
+        Scaner_dispositivo mainActivity;
 
         public Scaner_dispositivo getMainActivity() {
-            return Scaner_dispositivo;
+            return mainActivity;
         }
 
-        public void Scaner_dispositivo(Scaner_dispositivo Scaner_dispositivo) {
-            this.Scaner_dispositivo = Scaner_dispositivo;
+        public void setMainActivity(Scaner_dispositivo mainActivity) {
+            this.mainActivity = mainActivity;
         }
 
         @Override
         public void onLocationChanged(Location loc) {
-            // Este metodo se ejecuta cada vez que el GPS recibe nuevas coordenadas
-            // debido a la deteccion de un cambio de ubicacion
-            String latituds,logintuds;
-            latituds = ""+loc.getLatitude();
-            logintuds = ""+loc.getLongitude();
-            //loc.getLongitude();
-           // String Text = "Mi ubicacion actual es: " + "\n Lat = "
-             //       + loc.getLatitude() + "\n Long = " + loc.getLongitude();
+            // Este mŽtodo se ejecuta cada vez que el GPS recibe nuevas coordenadas
+            // debido a la detecci—n de un cambio de ubicacion
+           // loc.getLatitude();
+          //  loc.getLongitude();
 
-            latitud.setText(latituds);
-            longitud.setText(logintuds);
-
-           // mensaje1.setText(Text);
-            //this.setLocation(loc);
+            String lat= ""+loc.getLatitude();
+            String lon= ""+loc.getLongitude();
+            System.out.println(loc.getLatitude());
+            System.out.println(loc.getLongitude());
+            latitud.setText(lat);
+            longitud.setText(lon);
         }
 
         @Override
         public void onProviderDisabled(String provider) {
-            // Este metodo se ejecuta cuando el GPS es desactivado
-          //  mensaje1.setText("GPS Desactivado");
+            // Este mŽtodo se ejecuta cuando el GPS es desactivado
+           // messageTextView.setText("GPS Desactivado");
         }
 
         @Override
         public void onProviderEnabled(String provider) {
-            // Este metodo se ejecuta cuando el GPS es activado
-           // mensaje1.setText("GPS Activado");
+            // Este mŽtodo se ejecuta cuando el GPS es activado
+            //messageTextView.setText("GPS Activado");
         }
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
-            // Este metodo se ejecuta cada vez que se detecta un cambio en el
-            // status del proveedor de localizacion (GPS)
+            // Este mŽtodo se ejecuta cada vez que se detecta un cambio en el
+            // status del proveedor de localizaci—n (GPS)
             // Los diferentes Status son:
             // OUT_OF_SERVICE -> Si el proveedor esta fuera de servicio
-            // TEMPORARILY_UNAVAILABLE -> Temporalmente no disponible pero se
+            // TEMPORARILY_UNAVAILABLE -> Temp˜ralmente no disponible pero se
             // espera que este disponible en breve
             // AVAILABLE -> Disponible
         }
 
-
-    }
+    }/* End of Class MyLocationListener */
 
 
 
