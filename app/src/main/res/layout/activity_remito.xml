@@ -144,7 +144,7 @@
             <EditText
                 android:layout_width="326dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText2"
+                android:id="@+id/aclaracion"
                 android:hint="Aclaración "
                 android:layout_below="@+id/drawing"
                 android:layout_alignParentLeft="true"

@@ -212,7 +212,7 @@ public class Pedidos  extends ActionBarActivity {
         try {
             // Extract JSON array from the response
             JSONArray arr = new JSONArray(response);
-            System.out.println(arr.length());
+            System.out.println(response);
             // If no of array elements is not zero
             if(arr.length() != 0){
                 // Loop through each array element, get JSON object which has userid and username
@@ -327,6 +327,7 @@ public class Pedidos  extends ActionBarActivity {
             prgDialog.show();
 
             params.put("estado", json);
+
             // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
             client.post("http://186.137.170.157:2122/nicolas/detalles_pedidov3/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
                 @Override

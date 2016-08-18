@@ -6,10 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +31,16 @@ import java.util.UUID;
 
 import android.widget.AdapterView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Remito extends ActionBarActivity {
 
     String idped,idusuar;
@@ -36,7 +48,7 @@ public class Remito extends ActionBarActivity {
     private DrawingView drawView;
 
 
-    EditText observaciones;
+    EditText observaciones,aclaracion;
 
 
     DBController controller = new DBController(this);
@@ -52,6 +64,7 @@ public class Remito extends ActionBarActivity {
 
         drawView = (DrawingView)findViewById(R.id.drawing);
         observaciones = (EditText)findViewById(R.id.observaciones);
+        aclaracion = (EditText)findViewById(R.id.aclaracion);
 
 
     }
@@ -106,37 +119,73 @@ public class Remito extends ActionBarActivity {
 
     public void savere(View view)
     {
-        System.out.println("hola");
+        //String encodedString;
+       // System.out.println("hola");
         AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
         saveDialog.setTitle("Guardar Remito");
         saveDialog.setMessage("Desea guardar el remito?");
         saveDialog.setPositiveButton("Si", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int which){
+
+
                 //save drawing
                 drawView.setDrawingCacheEnabled(true);
 
                 Bitmap image = drawView.getDrawingCache();
+                image = redimensionarImagenMaximo(image,200,55);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                image.compress(Bitmap.CompressFormat.JPEG, 100 , stream);
+                byte[] byte_arr = stream.toByteArray();
+                // Encode Image to String
+
+                String encodedString = Base64.encodeToString(byte_arr, 0);
+
+
                 HashMap<String, String> queryValues = new HashMap<String, String>();
 
                 queryValues.put("idpedido", idped);
                 queryValues.put("observaciones",observaciones.getText().toString());
+                queryValues.put("aclaracion",aclaracion.getText().toString());
+                queryValues.put("firma",encodedString);
                 queryValues.put("horafinal", tiempo());
 
-                controller.upfoto(image,queryValues);
-                controller.upload_aux(idped);
+                controller.upfoto(queryValues);
+
+                //controller.upload_aux(idped);
+
+                //controller.getdisp(idped);
 
 
-                controller.elim_aux(idped);
 
+
+                // Create GSON object
+                Gson gson = new GsonBuilder().create();
+                ArrayList<HashMap<String, String>> dispList =  controller.getdisp(idped);
+
+
+                ArrayList<HashMap<String, String>> remlist =  controller.getremito(idped);
+
+
+                dispList.addAll(remlist);
+
+                //controller.elim_aux(idped);
+                String nn= gson.toJson(dispList);
+                //System.out.println(nn);
+               // System.out.println(userList);
 
                 drawView.destroyDrawingCache();
 
 
+                send_remito(nn);
+
+
+
+/*
                 Intent i = new Intent(Remito.this, Pedidos.class);
                 i.putExtra("idpedido", idped );
                 i.putExtra("idusuario",idusuar );
                 startActivity(i);
-
+*/
 
 
             }
@@ -162,5 +211,87 @@ public class Remito extends ActionBarActivity {
         String time = "" + date.getHours() + ":" + date.getMinutes() + " " + date.getDay() + "/" + date.getMonth() + "/" + year;
         return time;
     }
+
+
+
+    public Bitmap redimensionarImagenMaximo(Bitmap mBitmap, float newWidth, float newHeigth){
+        //Redimensionamos
+        int width = mBitmap.getWidth();
+        int height = mBitmap.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeigth) / height;
+        // create a matrix for the manipulation
+        Matrix matrix = new Matrix();
+        // resize the bit map
+        matrix.postScale(scaleWidth, scaleHeight);
+        // recreate the new Bitmap
+        return Bitmap.createBitmap(mBitmap, 0, 0, width, height, matrix, false);
+    }
+
+
+
+
+
+
+
+
+
+
+    //////////////***********actualiza status*************************//////////////
+
+
+    // Method to inform remote MySQL DB about completion of Sync activity
+    public void send_remito(String json) {
+        System.out.println(json);
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+
+
+       // prgDialog.show();
+
+            params.put("remito", json);
+            // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
+            client.post("http://192.168.5.51:2122/nicolas/detalles_pedidov4/recep_remito.php", params, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(String response) {
+                    Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_LONG).show();
+
+                    System.out.println(response);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Throwable error,
+                                      String content) {
+                    Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
+
+                }
+
+
+            });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
