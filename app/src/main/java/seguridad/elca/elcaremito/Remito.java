@@ -134,7 +134,7 @@ public class Remito extends ActionBarActivity {
                 Bitmap image = drawView.getDrawingCache();
                 image = redimensionarImagenMaximo(image,200,55);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                image.compress(Bitmap.CompressFormat.JPEG, 100 , stream);
+                image.compress(Bitmap.CompressFormat.JPEG, 50 , stream);
                 byte[] byte_arr = stream.toByteArray();
                 // Encode Image to String
 
@@ -151,41 +151,21 @@ public class Remito extends ActionBarActivity {
 
                 controller.upfoto(queryValues);
 
-                //controller.upload_aux(idped);
+                controller.upload_aux(idped);
 
                 //controller.getdisp(idped);
 
 
-
-
-                // Create GSON object
-                Gson gson = new GsonBuilder().create();
-                ArrayList<HashMap<String, String>> dispList =  controller.getdisp(idped);
-
-
-                ArrayList<HashMap<String, String>> remlist =  controller.getremito(idped);
-
-
-                dispList.addAll(remlist);
-
-                //controller.elim_aux(idped);
-                String nn= gson.toJson(dispList);
-                //System.out.println(nn);
-               // System.out.println(userList);
-
                 drawView.destroyDrawingCache();
 
 
-                send_remito(nn);
 
 
-
-/*
                 Intent i = new Intent(Remito.this, Pedidos.class);
                 i.putExtra("idpedido", idped );
                 i.putExtra("idusuario",idusuar );
                 startActivity(i);
-*/
+
 
 
             }
@@ -227,67 +207,6 @@ public class Remito extends ActionBarActivity {
         // recreate the new Bitmap
         return Bitmap.createBitmap(mBitmap, 0, 0, width, height, matrix, false);
     }
-
-
-
-
-
-
-
-
-
-
-    //////////////***********actualiza status*************************//////////////
-
-
-    // Method to inform remote MySQL DB about completion of Sync activity
-    public void send_remito(String json) {
-        System.out.println(json);
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-
-
-       // prgDialog.show();
-
-            params.put("remito", json);
-            // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-            client.post("http://192.168.5.51:2122/nicolas/detalles_pedidov4/recep_remito.php", params, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(String response) {
-                    Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_LONG).show();
-
-                    System.out.println(response);
-                }
-
-                @Override
-                public void onFailure(int statusCode, Throwable error,
-                                      String content) {
-                    Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
-
-                }
-
-
-            });
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

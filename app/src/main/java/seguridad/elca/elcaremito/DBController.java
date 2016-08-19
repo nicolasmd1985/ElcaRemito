@@ -453,7 +453,7 @@ public class DBController extends SQLiteOpenHelper {
 
     }
 
-////////////////*********************CONSULTA REMITO**************///////////////
+////////////////*********************CONSULTA REMITO POR PEDIDO**************///////////////
 
 
     /**
@@ -488,7 +488,32 @@ public class DBController extends SQLiteOpenHelper {
         return wordList;
     }
 
+    ///////////////////////**************CONSULTA REMITOS***************///////////////////
 
+
+    public ArrayList<HashMap<String, String>> consulrem() {
+        ArrayList<HashMap<String, String>> wordList;
+        //crea lista
+        wordList = new ArrayList<HashMap<String, String>>();
+
+        ///////QUERY DE DISPOSITIVOS
+        //  query = "CREATE TABLE dispositivos ( id_dispositivo INTEGER PRIMARY KEY, codigoscan TEXT, nombre TEXT, descripcion TEXT, latitud TEXT, longitud TEXT, horasca TEXT)";
+
+        String selectQuery = "SELECT fkidauxpedido FROM remito";
+
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("fkidauxpedido", cursor.getString(0));
+
+                wordList.add(map);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return wordList;
+    }
 
 
 

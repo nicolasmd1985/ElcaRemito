@@ -111,7 +111,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
                             ArrayList<HashMap<String, String>> userList =  controller.getUsers();
 
-                            if(userList.size()!=0) {System.out.println("Entro");
+                            if(userList.size()!=0) {
+                                //System.out.println("Entro");
 
                                 for (HashMap<String, String> hashMap : userList) {
 

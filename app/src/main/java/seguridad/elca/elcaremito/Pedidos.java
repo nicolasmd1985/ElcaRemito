@@ -110,6 +110,7 @@ public class Pedidos  extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        send_remito();
         int id = item.getItemId();
         //When Sync action button is clicked
         if (id == R.id.refresh) {
@@ -117,6 +118,7 @@ public class Pedidos  extends ActionBarActivity {
             syncSQLiteMySQLDB();
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -350,6 +352,80 @@ public class Pedidos  extends ActionBarActivity {
         }
 
     }
+
+
+
+
+    //////////////////////////////******************ENVIO DE REMITOS PENDIENTES*************///////////////////////////
+
+
+    public void send_remito()
+    {
+
+        ArrayList<HashMap<String, String>> pendiente= controller.consulrem();
+        // Create GSON object
+        Gson gson = new GsonBuilder().create();
+
+
+        if(pendiente.size()!=0) {
+
+
+            for (HashMap<String, String> hashMap : pendiente) {
+                System.out.println(hashMap.get("fkidauxpedido"));
+
+
+                ArrayList<HashMap<String, String>> dispList = controller.getdisp(hashMap.get("fkidauxpedido"));
+                ArrayList<HashMap<String, String>> remlist = controller.getremito(hashMap.get("fkidauxpedido"));
+                dispList.addAll(remlist);
+                //controller.elim_aux(idped);
+                String nn = gson.toJson(dispList);
+                //System.out.println(nn);
+                // System.out.println(userList);
+                send_remito(nn);
+            }
+
+        }else System.out.println("no tiene");
+
+
+    }
+
+
+
+
+    //////////////***********actualiza status*************************//////////////
+
+
+    // Method to inform remote MySQL DB about completion of Sync activity
+    public void send_remito(String json) {
+        System.out.println(json);
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+
+
+        // prgDialog.show();
+
+        params.put("remito", json);
+        // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
+        client.post("http://192.168.5.51:2122/nicolas/detalles_pedidov4/recep_remito.php", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(String response) {
+                Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_LONG).show();
+
+                System.out.println(response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Throwable error,
+                                  String content) {
+                Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
+
+            }
+
+
+        });
+    }
+
+
 
 }
 
