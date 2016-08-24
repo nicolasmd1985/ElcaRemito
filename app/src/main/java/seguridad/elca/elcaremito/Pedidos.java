@@ -163,7 +163,7 @@ public class Pedidos  extends ActionBarActivity {
         params.put("idusuar", idusuar);
         prgDialog.show();
         // Make Http call to getusers.php
-        client.post("http://186.137.170.157:2122/nicolas/detalles_pedidov4/get_pedido.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://186.137.170.157:2122/nicolas/detalles_pedidov6/get_pedido.php", params, new AsyncHttpResponseHandler() {
 
 
             @Override
@@ -331,7 +331,7 @@ public class Pedidos  extends ActionBarActivity {
             params.put("estado", json);
 
             // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-            client.post("http://186.137.170.157:2122/nicolas/detalles_pedidov3/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
+            client.post("http://186.137.170.157:2122/nicolas/detalles_pedidov6/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
                     Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
@@ -382,7 +382,10 @@ public class Pedidos  extends ActionBarActivity {
                 //System.out.println(nn);
                 // System.out.println(userList);
                 send_remito(nn);
+                //controller.elim_aux(hashMap.get("fkidauxpedido"));
+                //reloadActivity();
             }
+           // reloadActivity();
 
         }else System.out.println("no tiene");
 
@@ -406,12 +409,14 @@ public class Pedidos  extends ActionBarActivity {
 
         params.put("remito", json);
         // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-        client.post("http://192.168.5.51:2122/nicolas/detalles_pedidov4/recep_remito.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://192.168.5.51:2122/nicolas/detalles_pedidov6/remito_envia.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
                 Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_LONG).show();
 
                 System.out.println(response);
+                //reloadActivity();
+
             }
 
             @Override
