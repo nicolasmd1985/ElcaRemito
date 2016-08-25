@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.View;
@@ -179,20 +180,25 @@ public class Remito extends ActionBarActivity {
     }
 
 
+////////////////////***************OBTIENE TIEMPO**************///////////////////
     public String tiempo()
     {
-        final Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(System.currentTimeMillis());
-        Date date = cal.getTime();
+        //final Calendar cal = Calendar.getInstance();
+        //cal.setTimeInMillis(System.currentTimeMillis());
+        //cal.setTimeZone("GMT-8");
+        Date date = new Date();
         //long dia = date.getTime();
-        int year = date.getYear()-100;
-        System.out.println (year);
+        CharSequence s  = DateFormat.format("d/M/yyyy H:m", date.getTime());
+
+        System.out.println (s);
+        String time = s.toString();
         //System.out.println(""+date.getHours()+":"+date.getMinutes()+" "+date.getDay()+"/"+date.getMonth()+"/"+date.getYear());
-        String time = "" + date.getHours() + ":" + date.getMinutes() + " " + date.getDay() + "/" + date.getMonth() + "/" + year;
-        return time;
+        //String time = "" + date.getHours() + ":" + date.getMinutes() + " " + date.getDay() + "/" + date.getMonth() + "/" + year;
+        return time ;
     }
 
 
+/////////////////***************REDIMENSIONA IMAGEN***********/////////////////////
 
     public Bitmap redimensionarImagenMaximo(Bitmap mBitmap, float newWidth, float newHeigth){
         //Redimensionamos

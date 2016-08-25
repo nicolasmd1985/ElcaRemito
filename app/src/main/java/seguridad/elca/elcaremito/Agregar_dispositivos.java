@@ -167,6 +167,7 @@ public class Agregar_dispositivos extends ActionBarActivity {
         Intent objIntent = new Intent(getApplicationContext(), Scaner_dispositivo.class);
         objIntent.putExtra("idpedido", idped );
         objIntent.putExtra("idusuario",idusuar );
+
         startActivity(objIntent);
     }
 

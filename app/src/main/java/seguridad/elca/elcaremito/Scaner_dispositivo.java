@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -63,7 +64,7 @@ public class Scaner_dispositivo extends AppCompatActivity implements OnClickList
         scanBtn.setOnClickListener(this);
         idped = getIntent().getStringExtra("idpedido");
         //System.out.println
-
+        tiempo();
 
         LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         MyLocationListener mlocListener = new MyLocationListener();
@@ -223,15 +224,18 @@ public class Scaner_dispositivo extends AppCompatActivity implements OnClickList
 
     public String tiempo()
     {
-        final Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(System.currentTimeMillis());
-        Date date = cal.getTime();
+        //final Calendar cal = Calendar.getInstance();
+        //cal.setTimeInMillis(System.currentTimeMillis());
+        //cal.setTimeZone("GMT-8");
+        Date date = new Date();
                //long dia = date.getTime();
-        int year = date.getYear()-100;
-        System.out.println (year);
+        CharSequence s  = DateFormat.format("d/M/yyyy H:m", date.getTime());
+
+        System.out.println (s);
+        String time = s.toString();
         //System.out.println(""+date.getHours()+":"+date.getMinutes()+" "+date.getDay()+"/"+date.getMonth()+"/"+date.getYear());
-        String time = "" + date.getHours() + ":" + date.getMinutes() + " " + date.getDay() + "/" + date.getMonth() + "/" + year;
-        return time;
+        //String time = "" + date.getHours() + ":" + date.getMinutes() + " " + date.getDay() + "/" + date.getMonth() + "/" + year;
+        return time ;
     }
 
 

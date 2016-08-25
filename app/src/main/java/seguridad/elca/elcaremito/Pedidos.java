@@ -368,7 +368,9 @@ public class Pedidos  extends ActionBarActivity {
 
 
         if(pendiente.size()!=0) {
-
+            prgDialog = new ProgressDialog(this);
+            prgDialog.setMessage("Enviando Pedidos Pendientes, espere un momento............");
+            prgDialog.setCancelable(false);
 
             for (HashMap<String, String> hashMap : pendiente) {
                 System.out.println(hashMap.get("fkidauxpedido"));
@@ -381,10 +383,11 @@ public class Pedidos  extends ActionBarActivity {
                 String nn = gson.toJson(dispList);
                 //System.out.println(nn);
                 // System.out.println(userList);
-                send_remito(nn);
+                send_remito(nn,hashMap.get("fkidauxpedido"));
                 //controller.elim_aux(hashMap.get("fkidauxpedido"));
                 //reloadActivity();
             }
+            prgDialog.hide();
            // reloadActivity();
 
         }else System.out.println("no tiene");
@@ -399,7 +402,7 @@ public class Pedidos  extends ActionBarActivity {
 
 
     // Method to inform remote MySQL DB about completion of Sync activity
-    public void send_remito(String json) {
+    public void send_remito(String json, final String pedido) {
         System.out.println(json);
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
@@ -412,11 +415,15 @@ public class Pedidos  extends ActionBarActivity {
         client.post("http://192.168.5.51:2122/nicolas/detalles_pedidov6/remito_envia.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
-                Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_LONG).show();
+
 
                 System.out.println(response);
                 //reloadActivity();
+                if(response.equals("Message has been sent")) {
+                    controller.elim_aux(pedido);
+                   // Toast.makeText(getApplicationContext(), "SE ENVIARON LOS REMITOS PENDIENTES", Toast.LENGTH_LONG).show();
 
+                }
             }
 
             @Override
