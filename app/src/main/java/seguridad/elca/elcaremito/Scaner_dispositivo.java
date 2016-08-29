@@ -64,7 +64,7 @@ public class Scaner_dispositivo extends AppCompatActivity implements OnClickList
         scanBtn.setOnClickListener(this);
         idped = getIntent().getStringExtra("idpedido");
         //System.out.println
-        tiempo();
+        tiemp.setText(tiempo());//tiempo();
 
         LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         MyLocationListener mlocListener = new MyLocationListener();
@@ -109,7 +109,7 @@ public class Scaner_dispositivo extends AppCompatActivity implements OnClickList
 
             //formatTxt.setText("FORMAT: " + scanFormat);
             codigo.setText(scanContent);
-            tiemp.setText(tiempo());
+            //tiemp.setText(tiempo());
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(),
@@ -231,7 +231,7 @@ public class Scaner_dispositivo extends AppCompatActivity implements OnClickList
                //long dia = date.getTime();
         CharSequence s  = DateFormat.format("d/M/yyyy H:m", date.getTime());
 
-        System.out.println (s);
+      //  System.out.println (s);
         String time = s.toString();
         //System.out.println(""+date.getHours()+":"+date.getMinutes()+" "+date.getDay()+"/"+date.getMonth()+"/"+date.getYear());
         //String time = "" + date.getHours() + ":" + date.getMinutes() + " " + date.getDay() + "/" + date.getMonth() + "/" + year;

@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class Nuevo_pedido extends Activity {
     EditText descripcion,cliente,calle,numero,ciudad,provincia;
@@ -41,10 +42,12 @@ public class Nuevo_pedido extends Activity {
         HashMap<String, String> queryValues = new HashMap<String, String>();
 
         queryValues.put("idtecnico", idusuar);
+        queryValues.put("idauxpedido", UUID.randomUUID().toString());
+        //queryValues.put("idauxpedido", "hola");
         queryValues.put("descripcion", descripcion.getText().toString());
         queryValues.put("cliente", cliente.getText().toString());
         queryValues.put("calle", calle.getText().toString());
-        queryValues.put("numero", calle.getText().toString());
+        queryValues.put("numero", numero.getText().toString());
         queryValues.put("ciudad", ciudad.getText().toString());
         queryValues.put("provincia", provincia.getText().toString());
 

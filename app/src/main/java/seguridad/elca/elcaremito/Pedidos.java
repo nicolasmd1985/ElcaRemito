@@ -68,10 +68,6 @@ public class Pedidos  extends ActionBarActivity {
                 //System.out.println(idpedido);
 
 
-
-
-
-
                 //StringBuilder sb = new StringBuilder();
                 //sb.append(i+1);
                 Intent x = new Intent(Pedidos.this, Detalles_pedido.class);
@@ -151,7 +147,7 @@ public class Pedidos  extends ActionBarActivity {
 
 
 
-    //////////////************************SINCRONIZA BASE DE DATOS PHP************************
+    //////////////************************OBTIENE DATOS DE PHP************************
 
 
     public void syncSQLiteMySQLDB() {
@@ -163,7 +159,7 @@ public class Pedidos  extends ActionBarActivity {
         params.put("idusuar", idusuar);
         prgDialog.show();
         // Make Http call to getusers.php
-        client.post("http://186.137.170.157:2122/nicolas/detalles_pedidov6/get_pedido.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://186.137.146.76:2122/nicolas/detalles_pedidov6/get_pedido.php", params, new AsyncHttpResponseHandler() {
 
 
             @Override
@@ -192,14 +188,8 @@ public class Pedidos  extends ActionBarActivity {
                 updateSQLite(response);
             }
 
-
-
-
         });
     }
-
-
-
 
 
 
@@ -269,9 +259,6 @@ public class Pedidos  extends ActionBarActivity {
 
 
 
-
-
-
 ///////////////////////////********RECARGA ACTIVIDAD//////////////////
 
 
@@ -281,7 +268,6 @@ public class Pedidos  extends ActionBarActivity {
         objIntent.putExtra("idusuario",idusuar );
         startActivity(objIntent);
     }
-
 
 
     ////////////////////******************AGREGA PEDIDO******************//////////////////
@@ -296,8 +282,7 @@ public class Pedidos  extends ActionBarActivity {
 
 
 
-
-    //****************ESTO ES PARA DEVOLVERSE*****************
+    /////////****************ESTO ES PARA DEVOLVERSE*****************///////////////
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -312,10 +297,7 @@ public class Pedidos  extends ActionBarActivity {
     }
 
 
-
-
-
-    //////////////***********actualiza status*************************//////////////
+    //////////////***********actualiza status del estado*************************//////////////
 
 
     // Method to inform remote MySQL DB about completion of Sync activity
@@ -331,7 +313,7 @@ public class Pedidos  extends ActionBarActivity {
             params.put("estado", json);
 
             // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-            client.post("http://186.137.170.157:2122/nicolas/detalles_pedidov6/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
+            client.post("http://186.137.146.76:2122/nicolas/detalles_pedidov6/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
                     Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
@@ -354,27 +336,41 @@ public class Pedidos  extends ActionBarActivity {
     }
 
 
-
-
-    //////////////////////////////******************ENVIO DE REMITOS PENDIENTES*************///////////////////////////
+    //////////////////////////////******************ENVIO DE REMITOS PENDIENTES Y AUXILIARES*************///////////////////////////
 
 
     public void send_remito()
     {
 
-        ArrayList<HashMap<String, String>> pendiente= controller.consulrem();
-        // Create GSON object
+        prgDialog = new ProgressDialog(this);
+        prgDialog.setMessage("Enviando Pedidos Pendientes, espere un momento............");
+        prgDialog.setCancelable(false);
+
         Gson gson = new GsonBuilder().create();
 
 
-        if(pendiente.size()!=0) {
-            prgDialog = new ProgressDialog(this);
-            prgDialog.setMessage("Enviando Pedidos Pendientes, espere un momento............");
-            prgDialog.setCancelable(false);
+        ArrayList<HashMap<String, String>> aux_pen= controller.conidsop();
+        if(aux_pen.size()!=0)
+        {
+            String new_ped = gson.toJson(aux_pen);
+            System.out.println(new_ped);
+
+                            send_aux_ped(new_ped);
+
+
+        }
+
+
+
+        ArrayList<HashMap<String, String>> pendiente= controller.consulrem();
+        // Create GSON object
+
+        if(pendiente.size()!=0 ) {
+
 
             for (HashMap<String, String> hashMap : pendiente) {
-                System.out.println(hashMap.get("fkidauxpedido"));
-
+               // System.out.println(hashMap.get("fkidauxpedido"));
+                System.out.println("esta enviado los pedidos");
 
                 ArrayList<HashMap<String, String>> dispList = controller.getdisp(hashMap.get("fkidauxpedido"));
                 ArrayList<HashMap<String, String>> remlist = controller.getremito(hashMap.get("fkidauxpedido"));
@@ -387,23 +383,26 @@ public class Pedidos  extends ActionBarActivity {
                 //controller.elim_aux(hashMap.get("fkidauxpedido"));
                 //reloadActivity();
             }
+
             prgDialog.hide();
            // reloadActivity();
 
         }else System.out.println("no tiene");
 
 
+
+        prgDialog.hide();
     }
 
 
 
 
-    //////////////***********actualiza status*************************//////////////
+    //////////////***********ENVIO DE REMITOS*************************//////////////
 
 
     // Method to inform remote MySQL DB about completion of Sync activity
     public void send_remito(String json, final String pedido) {
-        System.out.println(json);
+       // System.out.println("holaaaa aqui es :"+pedido);
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
 
@@ -412,7 +411,7 @@ public class Pedidos  extends ActionBarActivity {
 
         params.put("remito", json);
         // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-        client.post("http://192.168.5.51:2122/nicolas/detalles_pedidov6/remito_envia.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://186.137.146.76:2122/nicolas/detalles_pedidov6/remito_envia.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
 
@@ -436,6 +435,45 @@ public class Pedidos  extends ActionBarActivity {
 
         });
     }
+
+
+
+
+    //////////////***********ENVIA AUX_PEDIDOS NUEVOS*************************//////////////
+
+
+    // Method to inform remote MySQL DB about completion of Sync activity
+    public void send_aux_ped(String json) {
+        //System.out.println(json);
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+
+
+        // prgDialog.show();
+
+        params.put("aux_ped", json);
+        // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
+        client.post("http://186.137.146.76:2122/nicolas/detalles_pedidov6/aux_pedidos.php", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(String response) {
+
+
+                System.out.println(response);
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Throwable error,
+                                  String content) {
+                Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
+
+            }
+
+
+        });
+    }
+
 
 
 
