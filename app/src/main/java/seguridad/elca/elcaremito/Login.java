@@ -90,7 +90,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         prgDialog.show();
         params.add("username", username);
         params.add("password", password);
-        client.post("http://186.137.146.76:2122/nicolas/logintecnicosV2/logintec.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://186.137.170.157:2122/nicolas/logintecnicosV2/logintec.php", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(String response) {

@@ -358,7 +358,7 @@ public class DBController extends SQLiteOpenHelper {
         ///////QUERY DE DISPOSITIVOS
         //  query = "CREATE TABLE dispositivos ( id_dispositivo INTEGER PRIMARY KEY, codigoscan TEXT, nombre TEXT, descripcion TEXT, latitud TEXT, longitud TEXT, horasca TEXT)";
 
-        String selectQuery = "SELECT  codigoscan,nombre,descripcion FROM dispositivos where fkidauxpedido ='"+cod+"'";
+        String selectQuery = "SELECT  codigoscan,nombre,descripcion FROM dispositivos where codigoscan ='"+cod+"'";
 
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);

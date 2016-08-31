@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -42,6 +43,7 @@ public class Pedidos  extends ActionBarActivity {
 
     String idusuar;
 
+    TextView contador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,22 +54,21 @@ public class Pedidos  extends ActionBarActivity {
         cargabdl(idusuar);
         prgDialog.dismiss();
 
+        contador=(TextView)findViewById(R.id.contador);
+
+
+        contadores();
 
         final ListView lista=(ListView)findViewById(android.R.id.list);
-
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int i, long l) {
                 Toast.makeText(getApplicationContext(), "presiono " + i, Toast.LENGTH_SHORT).show();
 
-
-
-                Map<String, Object> map = (Map<String, Object>)lista.getItemAtPosition(i);
+               Map<String, Object> map = (Map<String, Object>)lista.getItemAtPosition(i);
                 String idpedido = (String) map.get("idauxpedido");
                 //System.out.println(lista.getItemAtPosition(i));
                 //System.out.println(idpedido);
-
-
                 //StringBuilder sb = new StringBuilder();
                 //sb.append(i+1);
                 Intent x = new Intent(Pedidos.this, Detalles_pedido.class);
@@ -76,10 +77,6 @@ public class Pedidos  extends ActionBarActivity {
                 //for (HashMap<String, String> hashMap : loginlist) {}
                 //System.out.println(lista.);
                 startActivity(x);
-
-
-
-
 
             }
         });
@@ -343,7 +340,7 @@ public class Pedidos  extends ActionBarActivity {
     {
 
         prgDialog = new ProgressDialog(this);
-        prgDialog.setMessage("Enviando Pedidos Pendientes, espere un momento............");
+        prgDialog.setMessage("Enviando y Reciviendo Pedidos Pendientes, espere un momento............");
         prgDialog.setCancelable(false);
 
         Gson gson = new GsonBuilder().create();
@@ -385,11 +382,11 @@ public class Pedidos  extends ActionBarActivity {
             }
 
             prgDialog.hide();
-           // reloadActivity();
+
 
         }else System.out.println("no tiene");
 
-
+        contadores();
 
         prgDialog.hide();
     }
@@ -420,6 +417,7 @@ public class Pedidos  extends ActionBarActivity {
                 //reloadActivity();
                 if(response.equals("Message has been sent")) {
                     controller.elim_aux(pedido);
+                    contadores();
                    // Toast.makeText(getApplicationContext(), "SE ENVIARON LOS REMITOS PENDIENTES", Toast.LENGTH_LONG).show();
 
                 }
@@ -474,7 +472,21 @@ public class Pedidos  extends ActionBarActivity {
         });
     }
 
+///////////////********************CONTADOR DE REMITOS*************////////////////
 
+
+    public void contadores ()
+    {
+        ArrayList<HashMap<String, String>> pendiente= controller.consulrem();
+        // Create GSON object
+
+        int i=0;
+            for (HashMap<String, String> hashMap : pendiente) {
+                i++;
+            }
+        String con=""+i;
+        contador.setText(con);
+    }
 
 
 }

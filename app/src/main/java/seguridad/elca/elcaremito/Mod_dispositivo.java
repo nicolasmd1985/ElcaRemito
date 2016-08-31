@@ -40,6 +40,10 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
         idusuar = getIntent().getStringExtra("idusuario");
 
         code=getIntent().getStringExtra("codigoscan");
+
+
+
+       // System.out.println(code);
         carga_datos(code);
 
     }
@@ -57,9 +61,10 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
         for (HashMap<String, String> hashMap : dipslist) {
             //if (){}
 
-            //System.out.println(hashMap.get("codigoscan"));
+           // System.out.println(hashMap.get("codigoscan"));
             // controller.dipsup(hashMap.get("codigoscan"));
             codigo.setText(hashMap.get("codigoscan"));
+           // codigo.setText("nicolas");
             nombre.setText(hashMap.get("nombre"));
             descripcion.setText(hashMap.get("descripcion"));
 

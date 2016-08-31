@@ -63,8 +63,6 @@ public class Agregar_dispositivos extends ActionBarActivity {
                 int cont = 0;
                 for (HashMap<String, String> hashMap : dipslist) {
                     //if (){}
-
-
                     System.out.println(cont);
                     if(i==cont)
                     {
@@ -77,8 +75,6 @@ public class Agregar_dispositivos extends ActionBarActivity {
                         objIntent.putExtra("codigoscan", code);
                         objIntent.putExtra("idusuario",idusuar );
                         startActivity(objIntent);
-
-
 
                     }
                     cont=cont+1;

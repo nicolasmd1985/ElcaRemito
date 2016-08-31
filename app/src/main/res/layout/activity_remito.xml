@@ -45,7 +45,7 @@
 
 
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,43 +53,55 @@
         android:layout_below="@+id/linearLayout1"
         >
 
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/scrollView2"
-            >
 
-        </ScrollView>
 
-        <LinearLayout
+        <RelativeLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#D5E3EE"
             android:weightSum="1">
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Items Modificados o Instalados"
-                android:id="@+id/textView9"
-                android:textColor="#002fff"
-                android:textAlignment="center"
-                android:background="#c9e0e5" />
 
-            <ListView
-                android:layout_below="@+id/textpedido"
-                android:id="@android:id/list"
-                android:layout_width="match_parent"
-                android:layout_height="132dp"
-                android:layout_alignParentLeft="true"
-                android:descendantFocusability="blocksDescendants"
-                >
-            </ListView>
-        </LinearLayout>
+            <ScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:id="@+id/scrollView2"
+                android:layout_marginTop="25dp">
 
-    </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignBottom="@+id/scrollView2">
+
+                    <ListView
+                        android:id="@android:id/list"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:descendantFocusability="blocksDescendants"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true">
+
+
+                    </ListView>
+                </RelativeLayout>
+            </ScrollView>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Items Modificados o Instalados"
+            android:id="@+id/textView9"
+            android:textColor="#002fff"
+            android:textAlignment="center"
+            android:background="#c9e0e5" />
+
+    </RelativeLayout>
 
 
     <RelativeLayout
@@ -99,22 +111,15 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/linearLayout2">
 
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/scrollView3" />
-
         <RelativeLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/linearLayout3"
             android:weightSum="1"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="39dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/scrollView3">
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
 
 
             <EditText
@@ -149,19 +154,21 @@
                 android:layout_below="@+id/drawing"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
+
         </RelativeLayout>
 
+        <Button
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Finalizar"
+           android:id="@+id/save"
+
+           android:onClick="savere"
+            android:foregroundGravity="bottom"
+            android:layout_below="@+id/linearLayout3"
+            android:layout_centerHorizontal="true" />
+
+
     </RelativeLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Finalizar"
-        android:id="@+id/save"
-        android:layout_gravity="center_horizontal"
-        android:onClick="savere"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
 
 </RelativeLayout>
