@@ -90,7 +90,8 @@
             android:text="0"
             android:id="@+id/contador"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_toRightOf="@+id/textView10"
+            android:layout_toEndOf="@+id/textView10" />
     </RelativeLayout>
 
 </RelativeLayout>
