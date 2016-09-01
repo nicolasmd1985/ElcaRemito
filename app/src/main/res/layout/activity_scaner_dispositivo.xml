@@ -63,7 +63,9 @@
             android:ems="10" android:hint="@string/descrip_disp"
             android:layout_below="@+id/nomdisp"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true">
 
         </EditText>
 
@@ -116,7 +118,7 @@
             android:text="Agregar"
             android:id="@+id/btagr"
             android:onClick="adddip"
-            android:layout_below="@+id/tiempo"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
