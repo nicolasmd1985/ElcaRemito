@@ -52,7 +52,7 @@ public class Pedidos  extends ActionBarActivity {
         idusuar = getIntent().getStringExtra("idusuario");
         System.out.println("idusu"+idusuar);
         cargabdl(idusuar);
-        prgDialog.dismiss();
+        //prgDialog.dismiss();
 
         contador=(TextView)findViewById(R.id.contador);
 
@@ -154,7 +154,7 @@ public class Pedidos  extends ActionBarActivity {
         RequestParams params = new RequestParams();
         // Show ProgressBar
         params.put("idusuar", idusuar);
-        prgDialog.show();
+       // prgDialog.show();
         // Make Http call to getusers.php
         client.post("http://186.137.170.157:2122/nicolas/detalles_pedidov6/get_pedido.php", params, new AsyncHttpResponseHandler() {
 
@@ -180,7 +180,7 @@ public class Pedidos  extends ActionBarActivity {
 
             @Override
             public void onSuccess(String response) {
-                prgDialog.hide();
+                //prgDialog.hide();
                 // Update SQLite DB with response sent by getusers.php
                 updateSQLite(response);
             }
@@ -314,14 +314,14 @@ public class Pedidos  extends ActionBarActivity {
                 @Override
                 public void onSuccess(String response) {
                     Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
-
+                   // prgDialog.hide()
                 }
 
                 @Override
                 public void onFailure(int statusCode, Throwable error,
                                       String content) {
                     Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
-
+                    prgDialog.hide();
                 }
 
 
@@ -344,7 +344,7 @@ public class Pedidos  extends ActionBarActivity {
         prgDialog.setCancelable(false);
 
         Gson gson = new GsonBuilder().create();
-
+        prgDialog.show();
 
         ArrayList<HashMap<String, String>> aux_pen= controller.conidsop();
         if(aux_pen.size()!=0)
@@ -367,7 +367,7 @@ public class Pedidos  extends ActionBarActivity {
 
             for (HashMap<String, String> hashMap : pendiente) {
                // System.out.println(hashMap.get("fkidauxpedido"));
-                System.out.println("esta enviado los pedidos");
+                //System.out.println("esta enviado los pedidos");
 
                 ArrayList<HashMap<String, String>> dispList = controller.getdisp(hashMap.get("fkidauxpedido"));
                 ArrayList<HashMap<String, String>> remlist = controller.getremito(hashMap.get("fkidauxpedido"));
@@ -381,14 +381,18 @@ public class Pedidos  extends ActionBarActivity {
                 //reloadActivity();
             }
 
+
+
+
+        }
+        //else System.out.println("no tiene");
+
+        boolean resp= contadores();
+        if(resp)
+        {
             prgDialog.hide();
+        }
 
-
-        }else System.out.println("no tiene");
-
-        contadores();
-
-        prgDialog.hide();
     }
 
 
@@ -418,7 +422,8 @@ public class Pedidos  extends ActionBarActivity {
                 if(response.equals("Message has been sent")) {
                     controller.elim_aux(pedido);
                     contadores();
-                   // Toast.makeText(getApplicationContext(), "SE ENVIARON LOS REMITOS PENDIENTES", Toast.LENGTH_LONG).show();
+                    prgDialog.hide();
+                    //Toast.makeText(getApplicationContext(), "SE ENVIARON LOS REMITOS PENDIENTES", Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -427,7 +432,7 @@ public class Pedidos  extends ActionBarActivity {
             public void onFailure(int statusCode, Throwable error,
                                   String content) {
                 Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
-
+                prgDialog.hide();
             }
 
 
@@ -465,7 +470,7 @@ public class Pedidos  extends ActionBarActivity {
             public void onFailure(int statusCode, Throwable error,
                                   String content) {
                 Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
-
+                prgDialog.hide();
             }
 
 
@@ -475,7 +480,7 @@ public class Pedidos  extends ActionBarActivity {
 ///////////////********************CONTADOR DE REMITOS*************////////////////
 
 
-    public void contadores ()
+    public boolean contadores ()
     {
         ArrayList<HashMap<String, String>> pendiente= controller.consulrem();
         // Create GSON object
@@ -486,6 +491,12 @@ public class Pedidos  extends ActionBarActivity {
             }
         String con=""+i;
         contador.setText(con);
+        if(i==0)
+        {
+            System.out.println("sizas");
+            return true;
+
+        }else{return false;}
     }
 
 

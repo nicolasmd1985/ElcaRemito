@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -18,8 +19,9 @@ import seguridad.elca.elcaremito.android.IntentResult;
 public class Mod_dispositivo extends AppCompatActivity implements View.OnClickListener {
 
     DBController controller = new DBController(this);
-    EditText codigo,nombre,descripcion,latitud,longitud,tiemp;
-    private Button scanBtn;
+    EditText nombre,descripcion,latitud,longitud,tiemp;
+    TextView codigo;
+    //private Button scanBtn;
 
     String idped,code,idusuar;
 
@@ -29,13 +31,13 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_mod_dispositivo);
 
 
-        scanBtn = (Button)findViewById(R.id.scan_button);
-        codigo = (EditText) findViewById(R.id.codigo);
+        //scanBtn = (Button)findViewById(R.id.scan_button);
+        codigo = (TextView) findViewById(R.id.codigo);
         nombre = (EditText) findViewById(R.id.nomdisp);
         descripcion = (EditText) findViewById(R.id.descripcion);
 
 
-        scanBtn.setOnClickListener(this);
+        //scanBtn.setOnClickListener(this);
         idped= getIntent().getStringExtra("idpedido");
         idusuar = getIntent().getStringExtra("idusuario");
 
