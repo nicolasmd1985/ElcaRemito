@@ -106,9 +106,15 @@ public class Scaner_dispositivo extends AppCompatActivity implements OnClickList
         if (scanningResult != null) {
             String scanContent = scanningResult.getContents();
             String scanFormat = scanningResult.getFormatName();
+            if(scanContent.length()>15)
+            {
+                descripcion.setText(scanContent);
+            }else {codigo.setText(scanContent);}
+
+
 
             //formatTxt.setText("FORMAT: " + scanFormat);
-            codigo.setText(scanContent);
+
             //tiemp.setText(tiempo());
         }
         else{
@@ -259,6 +265,9 @@ public class Scaner_dispositivo extends AppCompatActivity implements OnClickList
     public void canceldisp(View view) {
         this.callHomeActivity(view);
     }
+
+
+
 
 
 

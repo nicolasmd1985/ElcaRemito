@@ -7,16 +7,6 @@
     android:paddingTop="1dp" >
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#cc0000"
-        android:padding="5dp"
-        android:text="@string/Moddip"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#FFFFFF" />
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,41 +26,8 @@
             android:layout_toRightOf="@+id/textView12"
             android:layout_toEndOf="@+id/textView12">
             <requestFocus />
+
         </TextView>
-
-        Button android:id="@+id/scan_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/scan"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/codigo"
-            android:layout_toEndOf="@+id/codigo" />
-
-
-        <EditText
-            android:id="@+id/nomdisp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10" android:hint="@string/nomb"
-            android:layout_below="@+id/codigo"
-            android:layout_toRightOf="@+id/textView12"
-            android:layout_toEndOf="@+id/textView12">
-
-        </EditText>
-
-
-        <EditText
-            android:id="@+id/descripcion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10" android:hint="@string/descrip_disp"
-            android:layout_below="@+id/nomdisp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true">
-
-        </EditText>
 
 
         <Button
@@ -104,6 +61,18 @@
             android:textSize="18dp"
             android:textStyle="bold" />
 
+        <EditText
+            android:id="@+id/nomdisp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10" android:hint="@string/nomb"
+            android:layout_below="@+id/codigo"
+            android:layout_toRightOf="@+id/textView13"
+            android:layout_toEndOf="@+id/textView13"
+            android:layout_marginTop="16dp">
+
+        </EditText>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -111,11 +80,46 @@
             android:id="@+id/textView13"
             android:textSize="18dp"
             android:textStyle="bold"
+            android:layout_alignBaseline="@+id/nomdisp"
             android:layout_alignBottom="@+id/nomdisp"
-            android:layout_toLeftOf="@+id/nomdisp"
-            android:layout_toStartOf="@+id/nomdisp" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:id="@+id/descripcion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10" android:hint="@string/descrip_disp"
+            android:layout_marginTop="36dp"
+            android:layout_below="@+id/nomdisp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:onClick="descripcion">
+
+        </EditText>
+
+
+        <Button android:id="@+id/scan_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/scan"
+            android:layout_alignBaseline="@+id/descripcion"
+            android:layout_alignBottom="@+id/descripcion"
+            android:layout_toRightOf="@+id/descripcion"
+            android:layout_toEndOf="@+id/descripcion"
+             />
 
 
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#cc0000"
+        android:padding="5dp"
+        android:text="@string/Moddip"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#FFFFFF" />
+
 
 </LinearLayout>

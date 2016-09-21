@@ -31,11 +31,12 @@
             android:ems="10" android:hint="@string/codigo"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:singleLine="true">
             <requestFocus />
         </EditText>
 
-    <Button android:id="@+id/scan_button"
+        <Button android:id="@+id/scan_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/scan"
@@ -51,7 +52,8 @@
             android:ems="10" android:hint="@string/nomb"
             android:layout_below="@+id/codigo"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:singleLine="true">
 
         </EditText>
 
@@ -64,8 +66,8 @@
             android:layout_below="@+id/nomdisp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true">
+            android:layout_toLeftOf="@+id/scan_button"
+            android:layout_toStartOf="@+id/scan_button">
 
         </EditText>
 

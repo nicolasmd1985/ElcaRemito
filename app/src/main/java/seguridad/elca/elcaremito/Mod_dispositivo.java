@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.View.OnClickListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 import seguridad.elca.elcaremito.android.IntentIntegrator;
 import seguridad.elca.elcaremito.android.IntentResult;
 
-public class Mod_dispositivo extends AppCompatActivity implements View.OnClickListener {
+public class Mod_dispositivo extends AppCompatActivity implements OnClickListener {
 
     DBController controller = new DBController(this);
     EditText nombre,descripcion,latitud,longitud,tiemp;
@@ -24,6 +25,7 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
     //private Button scanBtn;
 
     String idped,code,idusuar;
+    private  Button scanBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +37,15 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
         codigo = (TextView) findViewById(R.id.codigo);
         nombre = (EditText) findViewById(R.id.nomdisp);
         descripcion = (EditText) findViewById(R.id.descripcion);
+        scanBtn=(Button) findViewById(R.id.scan_button);
 
 
-        //scanBtn.setOnClickListener(this);
         idped= getIntent().getStringExtra("idpedido");
         idusuar = getIntent().getStringExtra("idusuario");
 
         code=getIntent().getStringExtra("codigoscan");
 
-
+        scanBtn.setOnClickListener(this);
 
        // System.out.println(code);
         carga_datos(code);
@@ -77,16 +79,6 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
 
 
 
-    ///////////////////************************CLICK/*******////////////
-    @Override
-    public void onClick(View v) {
-
-        if(v.getId()==R.id.scan_button){
-            IntentIntegrator scanIntegrator = new IntentIntegrator(this);
-            scanIntegrator.initiateScan();
-        }
-
-    }
 
 
 
@@ -100,7 +92,7 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
             String scanFormat = scanningResult.getFormatName();
 
             //formatTxt.setText("FORMAT: " + scanFormat);
-            codigo.setText(scanContent);
+            descripcion.setText(scanContent);
             //tiemp.setText(tiempo());
         }
         else{
@@ -176,4 +168,15 @@ public class Mod_dispositivo extends AppCompatActivity implements View.OnClickLi
 
 
 
+    @Override
+    public void onClick(View v) {
+
+        if(v.getId()==R.id.scan_button){
+            IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+            scanIntegrator.initiateScan();
+            System.out.println("aqui");
+        }
+        System.out.println("ok");
+
+    }
 }

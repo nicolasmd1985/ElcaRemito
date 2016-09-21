@@ -50,6 +50,7 @@ public class IntentIntegrator {
     private String buttonNo;
     private List<String> targetApplications;
     private final Map<String,Object> moreExtras;
+
     public IntentIntegrator(Activity activity) {
         this.activity = activity;
         title = DEFAULT_TITLE;
@@ -59,6 +60,7 @@ public class IntentIntegrator {
         targetApplications = TARGET_ALL_KNOWN;
         moreExtras = new HashMap<String,Object>(3);
     }
+
     public String getTitle() {
         return title;
     }
@@ -98,6 +100,8 @@ public class IntentIntegrator {
     public Collection<String> getTargetApplications() {
         return targetApplications;
     }
+
+
     public final void setTargetApplications(List<String> targetApplications) {
         if (targetApplications.isEmpty()) {
             throw new IllegalArgumentException("No target applications");
@@ -131,10 +135,12 @@ public class IntentIntegrator {
             }
             intentScan.putExtra("SCAN_FORMATS", joinedByComma.toString());
         }
+
         String targetAppPackage = findTargetAppPackage(intentScan);
         if (targetAppPackage == null) {
             return showDownloadDialog();
         }
+
         intentScan.setPackage(targetAppPackage);
         intentScan.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intentScan.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
@@ -142,9 +148,11 @@ public class IntentIntegrator {
         startActivityForResult(intentScan, REQUEST_CODE);
         return null;
     }
+
     protected void startActivityForResult(Intent intent, int code) {
         activity.startActivityForResult(intent, code);
     }
+
     private String findTargetAppPackage(Intent intent) {
         PackageManager pm = activity.getPackageManager();
         List<ResolveInfo> availableApps = pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
@@ -158,6 +166,7 @@ public class IntentIntegrator {
         }
         return null;
     }
+
     private AlertDialog showDownloadDialog() {
         AlertDialog.Builder downloadDialog = new AlertDialog.Builder(activity);
         downloadDialog.setTitle(title);
@@ -182,11 +191,13 @@ public class IntentIntegrator {
         });
         return downloadDialog.show();
     }
+
+
     public static IntentResult parseActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 String contents = intent.getStringExtra("SCAN_RESULT");
-                String formatName = intent.getStringExtra("SCAN_RESULT_FORMAT");
+                String formatName = intent.getStringExtra("SCA                                                                                                                                                              N_RESULT_FORMAT");
                 byte[] rawBytes = intent.getByteArrayExtra("SCAN_RESULT_BYTES");
                 int intentOrientation = intent.getIntExtra("SCAN_RESULT_ORIENTATION", Integer.MIN_VALUE);
                 Integer orientation = intentOrientation == Integer.MIN_VALUE ? null : intentOrientation;

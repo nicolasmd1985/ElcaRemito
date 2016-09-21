@@ -47,7 +47,11 @@
         android:ems="10"
         android:layout_below="@+id/textView1"
         android:layout_alignLeft="@+id/password"
-        android:layout_alignStart="@+id/password" >
+        android:layout_alignStart="@+id/password"
+        android:inputType="text"
+        android:lines="1"
+        android:linksClickable="false"
+        android:maxLength="15">
         <requestFocus />
     </EditText>
 
