@@ -101,7 +101,7 @@ public class Remito extends ActionBarActivity {
             //Set the User Array list in ListView
             //ListAdapter adapter = new SimpleAdapter( Remito.this,dipslist, R.layout.view_remito, new String[] {"nombre"}, new int[] {R.id.nomdisp});
 
-            ListAdapter adapter = new SimpleAdapter( Remito.this,dipslist, R.layout.view_remito, new String[] { "nombre"}, new int[] {R.id.nomdipo});
+            ListAdapter adapter = new SimpleAdapter( Remito.this,dipslist, R.layout.view_remito, new String[] { "nombre", "descripcion"}, new int[] {R.id.nomdipo, R.id.descdisp});
             ListView myList=(ListView)findViewById(android.R.id.list);
             myList.setAdapter(adapter);
             //Display Sync status of SQLite DB
