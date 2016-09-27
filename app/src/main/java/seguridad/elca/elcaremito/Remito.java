@@ -49,7 +49,7 @@ public class Remito extends ActionBarActivity {
     private DrawingView drawView;
 
 
-    EditText observaciones,aclaracion;
+    EditText observaciones,aclaracion,email;
 
 
     DBController controller = new DBController(this);
@@ -66,6 +66,7 @@ public class Remito extends ActionBarActivity {
         drawView = (DrawingView)findViewById(R.id.drawing);
         observaciones = (EditText)findViewById(R.id.observaciones);
         aclaracion = (EditText)findViewById(R.id.aclaracion);
+        email=(EditText)findViewById(R.id.email);
 
 
     }
@@ -107,7 +108,7 @@ public class Remito extends ActionBarActivity {
             //Display Sync status of SQLite DB
             // Toast.makeText(getApplicationContext(), controller.getSyncStatus(), Toast.LENGTH_LONG).show();
         }else{
-            Toast.makeText(getApplicationContext(), "No tiene dispositivos instaldos", Toast.LENGTH_LONG).show();}
+            Toast.makeText(getApplicationContext(), "ATENCION!!! No tiene ningun Item", Toast.LENGTH_LONG).show();}
         /*
         //Initialize Progress Dialog properties
         prgDialog = new ProgressDialog(this);
@@ -149,6 +150,8 @@ public class Remito extends ActionBarActivity {
                 queryValues.put("aclaracion",aclaracion.getText().toString());
                 queryValues.put("firma",encodedString);
                 queryValues.put("horafinal", tiempo());
+                queryValues.put("email", email.getText().toString());
+
 
                 controller.upfoto(queryValues);
 

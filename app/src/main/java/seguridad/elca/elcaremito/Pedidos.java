@@ -63,7 +63,7 @@ public class Pedidos  extends ActionBarActivity {
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(), "presiono " + i, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(), "presiono " + i, Toast.LENGTH_SHORT).show();
 
                Map<String, Object> map = (Map<String, Object>)lista.getItemAtPosition(i);
                 String idpedido = (String) map.get("idauxpedido");
@@ -425,7 +425,12 @@ public class Pedidos  extends ActionBarActivity {
                     prgDialog.hide();
                     //Toast.makeText(getApplicationContext(), "SE ENVIARON LOS REMITOS PENDIENTES", Toast.LENGTH_LONG).show();
 
-                }
+                }else
+                    {
+                        Toast.makeText(getApplicationContext(), "Eror de envio", Toast.LENGTH_LONG).show();
+                        prgDialog.hide();
+
+                    }
             }
 
             @Override
@@ -493,7 +498,7 @@ public class Pedidos  extends ActionBarActivity {
         contador.setText(con);
         if(i==0)
         {
-            System.out.println("sizas");
+            //System.out.println("sizas");
             return true;
 
         }else{return false;}

@@ -50,7 +50,7 @@ public class DBController extends SQLiteOpenHelper {
         query = "CREATE TABLE dispositivos ( id_dispositivo INTEGER PRIMARY KEY, codigoscan TEXT, nombre TEXT, descripcion TEXT, latitud TEXT, longitud TEXT, horasca TEXT,  fkidauxpedido TEXT REFERENCES aux_pedido(idauxpedido) ON DELETE CASCADE)";
         sqLiteDatabase.execSQL(query);
         ///////////////BASE DEL REMITO//////////////////
-        query = "CREATE TABLE remito ( id_remito INTEGER PRIMARY KEY, fkidauxpedido TEXT REFERENCES aux_pedido(idauxpedido) ON DELETE CASCADE, observaciones TEXT, firma TEXT, aclaracion TEXT, horafinalizado TEXT)";
+        query = "CREATE TABLE remito ( id_remito INTEGER PRIMARY KEY, fkidauxpedido TEXT REFERENCES aux_pedido(idauxpedido) ON DELETE CASCADE, observaciones TEXT, firma TEXT, aclaracion TEXT, horafinalizado TEXT, email TEXT)";
         sqLiteDatabase.execSQL(query);
 
 
@@ -412,6 +412,7 @@ public class DBController extends SQLiteOpenHelper {
             values.put("aclaracion", queryValues.get("aclaracion"));
             values.put("firma", queryValues.get("firma"));
             values.put("horafinalizado", queryValues.get("horafinal"));
+            values.put("email", queryValues.get("email"));
 
             database.insert("remito", null,values );
             database.close();
@@ -469,7 +470,7 @@ public class DBController extends SQLiteOpenHelper {
         ///////QUERY DE DISPOSITIVOS
         //  query = "CREATE TABLE dispositivos ( id_dispositivo INTEGER PRIMARY KEY, codigoscan TEXT, nombre TEXT, descripcion TEXT, latitud TEXT, longitud TEXT, horasca TEXT)";
 
-        String selectQuery = "SELECT  observaciones,firma,aclaracion,horafinalizado,fkidauxpedido FROM remito where fkidauxpedido ='"+idped+"'";
+        String selectQuery = "SELECT  observaciones,firma,aclaracion,horafinalizado,fkidauxpedido,email FROM remito where fkidauxpedido ='"+idped+"'";
 
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
@@ -481,6 +482,7 @@ public class DBController extends SQLiteOpenHelper {
                 map.put("aclaracion", cursor.getString(2));
                 map.put("horafinalizado", cursor.getString(3));
                 map.put("fkidauxpedido", cursor.getString(4));
+                map.put("email", cursor.getString(5));
 
                 wordList.add(map);
             } while (cursor.moveToNext());
