@@ -78,7 +78,8 @@
             android:ems="10" android:hint="latitud"
             android:layout_below="@+id/descripcion"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:visibility="invisible">
 
         </EditText>
 
@@ -102,7 +103,8 @@
             android:hint="longitud"
             android:layout_below="@+id/latitud"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:visibility="invisible" />
 
         <EditText
             android:id="@+id/tiempo"
@@ -112,7 +114,8 @@
             android:hint="tiempo"
             android:layout_below="@+id/longitud"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:visibility="invisible" />
 
         <Button
             android:layout_width="wrap_content"
