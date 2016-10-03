@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ElcaRemito</string>
+    <string name="app_name">Orden De Trabajo</string>
     <string name="action_settings">Settings</string>
     <string name="title">Agregar Pedido</string>
     <string name="plus">"+"</string>
@@ -21,7 +21,7 @@
     <string name="disp">Dispositivos Instalados</string>
     <string name="Dispositivos">Agregar Dispositivo</string>
     <string name="codigo">Introduzca Codigo</string>
-    <string name="nomb">Nombre del Dispositivo</string>
-    <string name="descrip_disp">Descripcion del dispositivo</string>
+    <string name="nomb">Descripcion</string>
+    <string name="descrip_disp">Item</string>
     <string name="Moddip">Modificar Dispositivos</string>
 </resources>

@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="REMITO"
+            android:text="ORDEN DE TRABAJO"
             android:id="@+id/remito"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/colorPrimary"
@@ -37,7 +37,8 @@
             android:textIsSelectable="true"
             android:textStyle="bold"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
 
     </RelativeLayout>
