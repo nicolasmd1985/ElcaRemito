@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#CCCCCC"
     android:orientation="vertical"
     android:paddingTop="1dp" >
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#cc0000"
-        android:padding="5dp"
-        android:text="@string/Dispositivos"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#FFFFFF" />
 
 
     <RelativeLayout
@@ -32,7 +23,9 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:singleLine="true">
+            android:singleLine="true"
+            android:selectAllOnFocus="true"
+            android:phoneNumber="false">
             <requestFocus />
         </EditText>
 
@@ -139,5 +132,15 @@
 
 
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#cc0000"
+        android:padding="5dp"
+        android:text="@string/Dispositivos"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#FFFFFF" />
+
 
 </LinearLayout>
