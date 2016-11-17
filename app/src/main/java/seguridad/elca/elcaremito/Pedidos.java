@@ -36,13 +36,8 @@ public class Pedidos  extends ActionBarActivity {
     DBController controller = new DBController(this);
     //Progress Dialog Object
     ProgressDialog prgDialog;
-
     HashMap<String, String> queryValues;
-
-    ListView lista;
-
     String idusuar;
-
     TextView contador;
 
     @Override
@@ -50,47 +45,31 @@ public class Pedidos  extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedidos);
         idusuar = getIntent().getStringExtra("idusuario");
-        System.out.println("idusu"+idusuar);
         cargabdl(idusuar);
-        //prgDialog.dismiss();
-
         contador=(TextView)findViewById(R.id.contador);
-
-
         contadores();
 
         final ListView lista=(ListView)findViewById(android.R.id.list);
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int i, long l) {
-               // Toast.makeText(getApplicationContext(), "presiono " + i, Toast.LENGTH_SHORT).show();
 
                Map<String, Object> map = (Map<String, Object>)lista.getItemAtPosition(i);
                 String idpedido = (String) map.get("idauxpedido");
-                //System.out.println(lista.getItemAtPosition(i));
-                //System.out.println(idpedido);
-                //StringBuilder sb = new StringBuilder();
-                //sb.append(i+1);
                 Intent x = new Intent(Pedidos.this, Detalles_pedido.class);
                 x.putExtra("idpedido",idpedido  );
                 x.putExtra("idusuario",idusuar );
-                //for (HashMap<String, String> hashMap : loginlist) {}
-                //System.out.println(lista.);
                 startActivity(x);
 
             }
         });
-
-
-
-    }
+  }
 
 
 
     ////////////////////**************MENU ACTUALIZAR**********************
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -100,18 +79,12 @@ public class Pedidos  extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         send_remito();
         int id = item.getItemId();
-        //When Sync action button is clicked
         if (id == R.id.refresh) {
-            //Sync SQLite DB data to remote MySQL DB
             syncSQLiteMySQLDB();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -119,26 +92,16 @@ public class Pedidos  extends ActionBarActivity {
     ////////////////*****************CARGA BASE DE DATOS SQLITE************************
     public void cargabdl(String idusuar)
     {
-
-
-        //inicia lista
         ArrayList<HashMap<String, String>> userList =  controller.get_auxped(idusuar);
-
-
         if(userList.size()!=0){
-            //Set the User Array list in ListView
             ListAdapter adapter = new SimpleAdapter( Pedidos.this,userList, R.layout.view_pedidos, new String[] { "cliente","descripcion"}, new int[] {R.id.clieteid, R.id.detalleid});
             ListView myList=(ListView)findViewById(android.R.id.list);
             myList.setAdapter(adapter);
-            //Display Sync status of SQLite DB
-            // Toast.makeText(getApplicationContext(), controller.getSyncStatus(), Toast.LENGTH_LONG).show();
         }
         //Initialize Progress Dialog properties
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Sincronizando Pedidos, espere un momento............");
         prgDialog.setCancelable(false);
-
-
     }
 
 
