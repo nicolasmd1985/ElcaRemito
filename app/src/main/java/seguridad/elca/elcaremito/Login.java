@@ -90,7 +90,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         prgDialog.show();
         params.add("username", username);
         params.add("password", password);
-        client.post("http://186.137.167.164:2122/nicolas/logintecnicosV2/logintec.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://elca.sytes.net:2122/app_elca/logintecnicosV2/logintec.php", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(String response) {
@@ -204,10 +204,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
-            registro();
+        registro();
 
         //    bdregistro();
-       // ArrayList<HashMap<String, String>> userList =  controller.getUsers();
+        // ArrayList<HashMap<String, String>> userList =  controller.getUsers();
 
     }
 
@@ -234,12 +234,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
 
 
-                        //System.out.println("hola");
+                    //System.out.println("hola");
 
-                        Intent x = new Intent(Login.this, Pedidos.class);
-                        Toast.makeText(getApplicationContext(), "Login Correcto", Toast.LENGTH_LONG).show();
-                        x.putExtra("idusuario",hashMap.get("idusuario")  );
-                        startActivity(x);
+                    Intent x = new Intent(Login.this, Pedidos.class);
+                    Toast.makeText(getApplicationContext(), "Login Correcto", Toast.LENGTH_LONG).show();
+                    x.putExtra("idusuario",hashMap.get("idusuario")  );
+                    startActivity(x);
 
 
 
@@ -249,7 +249,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
             }
         }else{Toast.makeText(getApplicationContext(), "No existe ningun usuario registrado", Toast.LENGTH_LONG).show();}
-       // finish();
+        // finish();
     }
 }
 

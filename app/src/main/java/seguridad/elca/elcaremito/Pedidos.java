@@ -54,7 +54,7 @@ public class Pedidos  extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView parent, View view, int i, long l) {
 
-               Map<String, Object> map = (Map<String, Object>)lista.getItemAtPosition(i);
+                Map<String, Object> map = (Map<String, Object>)lista.getItemAtPosition(i);
                 String idpedido = (String) map.get("idauxpedido");
                 Intent x = new Intent(Pedidos.this, Detalles_pedido.class);
                 x.putExtra("idpedido",idpedido  );
@@ -63,7 +63,7 @@ public class Pedidos  extends ActionBarActivity {
 
             }
         });
-  }
+    }
 
 
 
@@ -80,6 +80,7 @@ public class Pedidos  extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         send_remito();
+
         int id = item.getItemId();
         if (id == R.id.refresh) {
             syncSQLiteMySQLDB();
@@ -99,9 +100,7 @@ public class Pedidos  extends ActionBarActivity {
             myList.setAdapter(adapter);
         }
         //Initialize Progress Dialog properties
-        prgDialog = new ProgressDialog(this);
-        prgDialog.setMessage("Sincronizando Pedidos, espere un momento............");
-        prgDialog.setCancelable(false);
+
     }
 
 
@@ -111,15 +110,20 @@ public class Pedidos  extends ActionBarActivity {
 
 
     public void syncSQLiteMySQLDB() {
+        prgDialog = new ProgressDialog(this);
+        prgDialog.setMessage("Sincronizando Pedidos, espere un momento............");
+        prgDialog.setCancelable(false);
+        prgDialog.show();
+
         // Create AsycHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         // Http Request Params Object
         RequestParams params = new RequestParams();
         // Show ProgressBar
         params.put("idusuar", idusuar);
-       // prgDialog.show();
+        // prgDialog.show();
         // Make Http call to getusers.php
-        client.post("http://186.137.167.164:2122/nicolas/detalles_pedidov6/get_pedido.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov6/get_pedido.php", params, new AsyncHttpResponseHandler() {
 
 
             @Override
@@ -164,7 +168,7 @@ public class Pedidos  extends ActionBarActivity {
         try {
             // Extract JSON array from the response
             JSONArray arr = new JSONArray(response);
-            System.out.println(response);
+            //System.out.println(response);
             // If no of array elements is not zero
             if(arr.length() != 0){
                 // Loop through each array element, get JSON object which has userid and username
@@ -208,8 +212,13 @@ public class Pedidos  extends ActionBarActivity {
                 updateMySQLSyncSts(gson.toJson(usersynclist));
                 // Reload the Main Activity
                 reloadActivity();
-            }else {Toast.makeText(getApplicationContext(), "No Tiene Pedidos Para Sincronizar",
-                    Toast.LENGTH_LONG).show();}
+            }else {
+                Toast.makeText(getApplicationContext(), "No Tiene Pedidos Para Sincronizar",
+                        Toast.LENGTH_LONG).show();
+                prgDialog.hide();
+                // send_remito();
+                //System.out.println("hola");
+            }
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -235,9 +244,9 @@ public class Pedidos  extends ActionBarActivity {
 
     //Add User method getting called on clicking (+) button
     public void addPedidos(View view) {
-       Intent objIntent = new Intent(getApplicationContext(), Nuevo_pedido.class);
+        Intent objIntent = new Intent(getApplicationContext(), Nuevo_pedido.class);
         objIntent.putExtra("idusuario",idusuar );
-       startActivity(objIntent);
+        startActivity(objIntent);
     }
 
 
@@ -273,11 +282,11 @@ public class Pedidos  extends ActionBarActivity {
             params.put("estado", json);
 
             // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-            client.post("http://186.137.167.164:2122/nicolas/detalles_pedidov6/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
+            client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov6/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
                     Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
-                   // prgDialog.hide()
+                    // prgDialog.hide()
                 }
 
                 @Override
@@ -291,6 +300,8 @@ public class Pedidos  extends ActionBarActivity {
             });
         } else {
             Toast.makeText(getApplicationContext(), "No tiene Pedidos pendientes", Toast.LENGTH_LONG).show();
+
+
         }
 
     }
@@ -303,7 +314,7 @@ public class Pedidos  extends ActionBarActivity {
     {
 
         prgDialog = new ProgressDialog(this);
-        prgDialog.setMessage("Enviando y Reciviendo Pedidos Pendientes, espere un momento............");
+        prgDialog.setMessage("Enviando y Recibiendo Pedidos Pendientes, espere un momento............");
         prgDialog.setCancelable(false);
 
         Gson gson = new GsonBuilder().create();
@@ -313,9 +324,8 @@ public class Pedidos  extends ActionBarActivity {
         if(aux_pen.size()!=0)
         {
             String new_ped = gson.toJson(aux_pen);
-            System.out.println(new_ped);
-
-                            send_aux_ped(new_ped);
+            //System.out.println(new_ped);
+            send_aux_ped(new_ped);
 
 
         }
@@ -329,7 +339,7 @@ public class Pedidos  extends ActionBarActivity {
 
 
             for (HashMap<String, String> hashMap : pendiente) {
-               // System.out.println(hashMap.get("fkidauxpedido"));
+                // System.out.println(hashMap.get("fkidauxpedido"));
                 //System.out.println("esta enviado los pedidos");
 
                 ArrayList<HashMap<String, String>> dispList = controller.getdisp(hashMap.get("fkidauxpedido"));
@@ -366,7 +376,7 @@ public class Pedidos  extends ActionBarActivity {
 
     // Method to inform remote MySQL DB about completion of Sync activity
     public void send_remito(String json, final String pedido) {
-       // System.out.println("holaaaa aqui es :"+pedido);
+        // System.out.println("holaaaa aqui es :"+pedido);
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
 
@@ -374,26 +384,12 @@ public class Pedidos  extends ActionBarActivity {
         // prgDialog.show();
 
         params.put("remito", json);
+
         // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-        client.post("http://186.137.167.164:2122/nicolas/detalles_pedidov6/remito_envia.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov6/remito_envia.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
-
-
-                System.out.println(response);
-                //reloadActivity();
-                if(response.equals("Message has been sent")) {
-                    controller.elim_aux(pedido);
-                    contadores();
-                    prgDialog.hide();
-                    //Toast.makeText(getApplicationContext(), "SE ENVIARON LOS REMITOS PENDIENTES", Toast.LENGTH_LONG).show();
-
-                }else
-                    {
-                        Toast.makeText(getApplicationContext(), "Eror de envio", Toast.LENGTH_LONG).show();
-                        prgDialog.hide();
-
-                    }
+                pendiente(response,pedido);
             }
 
             @Override
@@ -424,12 +420,12 @@ public class Pedidos  extends ActionBarActivity {
 
         params.put("aux_ped", json);
         // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-        client.post("http://186.137.167.164:2122/nicolas/detalles_pedidov6/aux_pedidos.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://elca.sytes.net:2122/app_elca/testELCA_APP/detalles_pedidov6/aux_pedidos.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
 
 
-                System.out.println(response);
+                // System.out.println(response);
 
 
             }
@@ -454,9 +450,9 @@ public class Pedidos  extends ActionBarActivity {
         // Create GSON object
 
         int i=0;
-            for (HashMap<String, String> hashMap : pendiente) {
-                i++;
-            }
+        for (HashMap<String, String> hashMap : pendiente) {
+            i++;
+        }
         String con=""+i;
         contador.setText(con);
         if(i==0)
@@ -465,6 +461,21 @@ public class Pedidos  extends ActionBarActivity {
             return true;
 
         }else{return false;}
+    }
+
+
+////////////////////*************************ELIMINAR PENDIENTES****************//////////////
+
+    public void pendiente(String respon,String pedido)
+    {
+        System.out.println(respon);
+        //System.out.println("hola");
+        controller.elim_aux(pedido);
+        // contadores();
+        // Toast.makeText(getApplicationContext(), "Se enviaron",
+        //       Toast.LENGTH_LONG).show();
+
+        reloadActivity();
     }
 
 
