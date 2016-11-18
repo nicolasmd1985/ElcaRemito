@@ -292,8 +292,10 @@ public class Pedidos  extends ActionBarActivity {
                 @Override
                 public void onFailure(int statusCode, Throwable error,
                                       String content) {
-                    Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
                     prgDialog.hide();
+                    reloadActivity();
+                    Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
+
                 }
 
 
@@ -395,8 +397,10 @@ public class Pedidos  extends ActionBarActivity {
             @Override
             public void onFailure(int statusCode, Throwable error,
                                   String content) {
-                Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
                 prgDialog.hide();
+                reloadActivity();
+                Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
+
             }
 
 
@@ -468,12 +472,16 @@ public class Pedidos  extends ActionBarActivity {
 
     public void pendiente(String respon,String pedido)
     {
-        System.out.println(respon);
+        //System.out.println(respon);
         //System.out.println("hola");
-        controller.elim_aux(pedido);
-        // contadores();
-        // Toast.makeText(getApplicationContext(), "Se enviaron",
-        //       Toast.LENGTH_LONG).show();
+        if(respon.contains("recibido"))
+        {
+            controller.elim_aux(pedido);
+        }else{
+
+            Toast.makeText(getApplicationContext(), "No se logro Enviar Pedido",
+                           Toast.LENGTH_LONG).show();
+        }
 
         reloadActivity();
     }
