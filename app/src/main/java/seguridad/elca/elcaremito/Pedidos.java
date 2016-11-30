@@ -1,9 +1,11 @@
 package seguridad.elca.elcaremito;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,6 +65,23 @@ public class Pedidos  extends ActionBarActivity {
 
             }
         });
+
+
+        lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView adapterView, View view, int i, long l) {
+                Toast.makeText(getApplicationContext(), "presiono" + i, Toast.LENGTH_SHORT).show();
+
+                Map<String, Object> map = (Map<String, Object>)lista.getItemAtPosition(i);
+                String idpedido = (String) map.get("idauxpedido");
+                System.out.println(idpedido);
+                showSimplePopUp(idpedido);
+
+                return true;
+            }
+
+        });
+
     }
 
 
@@ -123,7 +142,7 @@ public class Pedidos  extends ActionBarActivity {
         params.put("idusuar", idusuar);
         // prgDialog.show();
         // Make Http call to getusers.php
-        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov6/get_pedido.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/get_pedido.php", params, new AsyncHttpResponseHandler() {
 
 
             @Override
@@ -282,7 +301,7 @@ public class Pedidos  extends ActionBarActivity {
             params.put("estado", json);
 
             // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-            client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov6/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
+            client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
                     Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
@@ -388,7 +407,7 @@ public class Pedidos  extends ActionBarActivity {
         params.put("remito", json);
 
         // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov6/remito_envia.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/remito_envia.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
                 pendiente(response,pedido);
@@ -424,7 +443,7 @@ public class Pedidos  extends ActionBarActivity {
 
         params.put("aux_ped", json);
         // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-        client.post("http://elca.sytes.net:2122/app_elca/testELCA_APP/detalles_pedidov6/aux_pedidos.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/aux_pedidos.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
 
@@ -485,6 +504,95 @@ public class Pedidos  extends ActionBarActivity {
 
         reloadActivity();
     }
+
+
+    //////////******************POP UP**************//////////////
+    private void showSimplePopUp(final String idped) {
+
+        AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+        helpBuilder.setTitle("Eliminar");
+        helpBuilder.setMessage("Realmente desea elimiar el pedido");
+        helpBuilder.setPositiveButton("Si",
+                new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing but close the dialog
+                        System.out.println("si");
+                        //controller.elim_aux(idped);
+                        updatestado(idped);
+                        //reloadActivity();
+                    }
+                });
+        helpBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+                System.out.println("no");
+            }
+        });
+
+        // Remember, create doesn't show the dialog
+        AlertDialog helpDialog = helpBuilder.create();
+        helpDialog.show();
+    }
+
+
+
+
+    //////////////***********actualiza status del estado*************************//////////////
+
+
+    // Method to inform remote MySQL DB about completion of Sync activity
+    public void updatestado(final String idped) {
+
+        prgDialog = new ProgressDialog(this);
+        prgDialog.setMessage("Eliminando Pedido............");
+        prgDialog.setCancelable(false);
+        prgDialog.show();
+
+        //prgDialog.show();
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+
+        Gson gson = new GsonBuilder().create();
+        ArrayList<HashMap<String, String>> usersynclist;
+        usersynclist = new ArrayList<HashMap<String, String>>();
+        HashMap<String, String> map = new HashMap<String, String>();
+        // Add status for each User in Hashmap
+        map.put("Id", idped);
+        // map.put("status", "0");
+        usersynclist.add(map);
+        String json = gson.toJson(usersynclist);
+        System.out.println(json);
+
+
+
+
+        params.put("estado", json);
+
+        // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
+        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/deletepedido.php", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(String response) {
+                Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
+                prgDialog.hide();
+                controller.elim_aux(idped);
+                reloadActivity();
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Throwable error,
+                                  String content) {
+                Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
+                prgDialog.hide();
+            }
+
+
+        });
+    }
+
 
 
 }
