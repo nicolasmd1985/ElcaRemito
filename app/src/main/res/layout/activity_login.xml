@@ -68,9 +68,9 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:id="@+id/imageView"
-        android:src="@mipmap/elc_alfa"
+        android:src="@drawable/logodipzo"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true" />
 

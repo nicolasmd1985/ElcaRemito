@@ -90,9 +90,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         prgDialog.show();
         params.add("username", username);
         params.add("password", password);
-        client.post("http://elca.sytes.net:2122/app_elca/logintecnicosV2/logintec.php", params, new AsyncHttpResponseHandler() {
+        //client.post("http://elca.sytes.net:2122/app_elca/logintecnicosV2/logintec.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://resonanciaverde.sytes.net:2122/dipzotecnico/logintecnicosV2/logintec.php", params, new AsyncHttpResponseHandler() {
 
-            @Override
+        @Override
             public void onSuccess(String response) {
                 prgDialog.hide();
                 try {

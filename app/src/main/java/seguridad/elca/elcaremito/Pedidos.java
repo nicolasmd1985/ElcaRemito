@@ -3,9 +3,10 @@ package seguridad.elca.elcaremito;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+//import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Pedidos  extends ActionBarActivity {
+public class Pedidos  extends AppCompatActivity {
 
 
     //DB Class to perform DB related operations
@@ -142,7 +143,8 @@ public class Pedidos  extends ActionBarActivity {
         params.put("idusuar", idusuar);
         // prgDialog.show();
         // Make Http call to getusers.php
-        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/get_pedido.php", params, new AsyncHttpResponseHandler() {
+        //client.post("http://192.168.0.101:2122/app_elca/detalles_pedidov7/get_pedido.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://192.168.0.101:2122/AppTecnicos/detalles/get_pedido.php", params, new AsyncHttpResponseHandler() {
 
 
             @Override
@@ -301,7 +303,9 @@ public class Pedidos  extends ActionBarActivity {
             params.put("estado", json);
 
             // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-            client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
+           // client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
+            client.post("http://192.168.0.101:2122/AppTecnicos/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
+
                 @Override
                 public void onSuccess(String response) {
                     Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();
@@ -407,7 +411,7 @@ public class Pedidos  extends ActionBarActivity {
         params.put("remito", json);
 
         // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/remito_envia.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://192.168.0.101:2122/AppTecnicos/remito_envia.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
                 pendiente(response,pedido);
@@ -443,7 +447,7 @@ public class Pedidos  extends ActionBarActivity {
 
         params.put("aux_ped", json);
         // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/aux_pedidos.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://192.168.0.101:2122/AppTecnicos/aux_pedidos.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
 
@@ -572,7 +576,7 @@ public class Pedidos  extends ActionBarActivity {
         params.put("estado", json);
 
         // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-        client.post("http://elca.sytes.net:2122/app_elca/detalles_pedidov7/deletepedido.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://192.168.0.101:2122/AppTecnicos/deletepedido.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
                 Toast.makeText(getApplicationContext(), "Se ha informado al supervisor de la sincronización", Toast.LENGTH_LONG).show();

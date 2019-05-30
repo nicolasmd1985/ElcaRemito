@@ -2,7 +2,8 @@ package seguridad.elca.elcaremito;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+//import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +14,7 @@ import java.util.HashMap;
 
 
 
-public class Detalles_pedido extends ActionBarActivity implements View.OnClickListener{
+public class Detalles_pedido extends AppCompatActivity implements View.OnClickListener{
 
     DBController controller = new DBController(this);
 
